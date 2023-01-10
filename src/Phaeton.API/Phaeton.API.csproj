@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+	</ItemGroup>
+
+</Project>

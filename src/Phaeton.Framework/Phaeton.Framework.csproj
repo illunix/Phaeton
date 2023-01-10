@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Figgle" Version="0.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Phaeton.API\Phaeton.API.csproj" />
+    <ProjectReference Include="..\Phaeton.Auth\Phaeton.Auth.csproj" />
+    <ProjectReference Include="..\Phaeton.Contexts\Phaeton.Contexts.csproj" />
+    <ProjectReference Include="..\Phaeton.HTTP\Phaeton.HTTP.csproj" />
+    <ProjectReference Include="..\Phaeton.Observability\Phaeton.Observability.csproj" />
+    <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+  </ItemGroup>
+
+</Project>
