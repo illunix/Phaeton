@@ -1,4 +1,4 @@
-# Phaeton - A Microservices Library for ASP.NET Core
+# Phaeton - Accelerate Microservices Development with ASP.NET Core
 
 Welcome to the Phaeton project! This repository contains a collection of libraries that simplify the process of building scalable and high-performance microservices using the ASP.NET Core framework.
 
