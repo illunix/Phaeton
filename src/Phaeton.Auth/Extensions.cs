@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Phaeton;
 using Phaeton.Auth.JWT;
@@ -25,6 +27,9 @@ public static class Extensions
             return services;
 
         var options = section.BindOptions<AuthOptions>();
+        if (!options.Enabled)
+            return services;
+        
         if (options.JWT is null)
             throw new InvalidOperationException("JWT options cannot be null.");
 
@@ -88,5 +93,20 @@ public static class Extensions
         services.AddSingleton<IJsonWebTokenManager, JsonWebTokenManager>();
 
         return services;
+    }
+
+    public static IApplicationBuilder UseAuth(this IApplicationBuilder app)
+    {
+        var options = app.ApplicationServices.GetRequiredService<IOptions<AuthOptions>>().Value;
+        if (!options.Enabled)
+            return app;
+
+        /*
+        app
+            .UseAuthentication()
+            .UseAuthorization();
+*/
+        
+        return app;
     }
 }

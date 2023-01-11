@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Phaeton;
 using Phaeton.API.Exceptions;
 using Phaeton.API.Swagger;
 using Phaeton.Auth;
 using Phaeton.Contexts;
 using Phaeton.Dispatchers;
 using Phaeton.Observability;
-using Phaeton.Framework;
+using Phaeton.gRPC;
 
 namespace Phaeton.Framework;
 
@@ -37,7 +36,8 @@ public static class Extensions
             .AddContexts()
             .AddPhaeton(config)
             .AddAuth(config)
-            .AddSwaggerDocs(config);
+            .AddSwaggerDocs(config)
+            .AddgRPC(config);
 
         return builder;
     }
@@ -47,9 +47,8 @@ public static class Extensions
         app
             .UseErrorHandling()
             .UseSwaggerDocs()
-            .UseAuthentication()
-            .UseRouting()
-            .UseAuthorization();
+            .UseAuth()
+            .UseRouting();
 
         return app;
     }

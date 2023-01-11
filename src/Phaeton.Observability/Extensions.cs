@@ -28,7 +28,6 @@ public static class Extensions
     )
         => builder.UseSerilog((ctx, loggerConfiguration) =>
         {
-
             var appOptions = ctx.Configuration.BindOptions<AppOptions>(AppSectionName);
             var loggerOptions = ctx.Configuration.BindOptions<SerilogOptions>(SerilogSectionName);
 

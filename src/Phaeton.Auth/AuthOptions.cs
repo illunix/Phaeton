@@ -5,6 +5,7 @@ namespace Phaeton.Auth;
 
 public sealed class AuthOptions
 {
+    public bool Enabled { get; init; } 
     public JWTOptions? JWT { get; set; }
     public GoogleOptions? Google { get; set; }
 

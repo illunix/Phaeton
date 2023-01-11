@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Phaeton.API\Phaeton.API.csproj" />
     <ProjectReference Include="..\Phaeton.Auth\Phaeton.Auth.csproj" />
     <ProjectReference Include="..\Phaeton.Contexts\Phaeton.Contexts.csproj" />
+    <ProjectReference Include="..\Phaeton.gRPC\Phaeton.gRPC.csproj" />
     <ProjectReference Include="..\Phaeton.HTTP\Phaeton.HTTP.csproj" />
     <ProjectReference Include="..\Phaeton.Observability\Phaeton.Observability.csproj" />
     <ProjectReference Include="..\Phaeton\Phaeton.csproj" />

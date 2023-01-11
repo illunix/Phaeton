@@ -5,14 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.51.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Phaeton.Auth\Phaeton.Auth.csproj" />
-    <ProjectReference Include="..\Phaeton.gRPC.Generator\Phaeton.gRPC.Generator.csproj" />
     <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
   </ItemGroup>
 

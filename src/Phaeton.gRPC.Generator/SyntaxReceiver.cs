@@ -1,9 +1,9 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 
-namespace Phaeton.gRPC.Generator;
+namespace Phaeton.gRPC.Server.Extensions.Generator;
 
-internal class SyntaxReceiver : ISyntaxReceiver
+internal sealed class SyntaxReceiver : ISyntaxReceiver
 {
     public List<ClassDeclarationSyntax> CandidateClasses { get; } = new();
 

@@ -19,11 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.Framework", "src\Ph
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.gRPC", "src\Phaeton.gRPC\Phaeton.gRPC.csproj", "{23541117-8E86-46A3-A305-B5946A0B1EBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.gRPC.Generator", "src\Phaeton.gRPC.Generator\Phaeton.gRPC.Generator.csproj", "{09A9595B-5CC0-4E83-9216-A78C66C35299}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.HTTP", "src\Phaeton.HTTP\Phaeton.HTTP.csproj", "{4987CAF7-1B9E-48FA-969A-065C42D1B8E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.Observability", "src\Phaeton.Observability\Phaeton.Observability.csproj", "{F289096B-1313-4935-B823-947AA87A121D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{0A0518C5-2F8E-4BDA-9998-FD90B5F75D1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.Sample.API", "samples\Phaeton.Sample.API\Phaeton.Sample.API.csproj", "{F9CFBD53-AF86-48D8-A9AE-DB79BD505A88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +65,6 @@ Global
 		{23541117-8E86-46A3-A305-B5946A0B1EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23541117-8E86-46A3-A305-B5946A0B1EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23541117-8E86-46A3-A305-B5946A0B1EBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09A9595B-5CC0-4E83-9216-A78C66C35299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09A9595B-5CC0-4E83-9216-A78C66C35299}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09A9595B-5CC0-4E83-9216-A78C66C35299}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09A9595B-5CC0-4E83-9216-A78C66C35299}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4987CAF7-1B9E-48FA-969A-065C42D1B8E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4987CAF7-1B9E-48FA-969A-065C42D1B8E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4987CAF7-1B9E-48FA-969A-065C42D1B8E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,9 +73,16 @@ Global
 		{F289096B-1313-4935-B823-947AA87A121D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F289096B-1313-4935-B823-947AA87A121D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F289096B-1313-4935-B823-947AA87A121D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9CFBD53-AF86-48D8-A9AE-DB79BD505A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CFBD53-AF86-48D8-A9AE-DB79BD505A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9CFBD53-AF86-48D8-A9AE-DB79BD505A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9CFBD53-AF86-48D8-A9AE-DB79BD505A88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F9CFBD53-AF86-48D8-A9AE-DB79BD505A88} = {0A0518C5-2F8E-4BDA-9998-FD90B5F75D1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2AAC794-0A2A-447B-AB7C-E9DB010D4192}

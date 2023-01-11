@@ -1,8 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using System.Diagnostics;
 using System.Text;
 
-namespace Phaeton.gRPC.Generator;
+namespace Phaeton.gRPC.Server.Extensions.Generator;
 
 [Generator]
 internal sealed class SourceGenerator : ISourceGenerator
@@ -12,35 +13,34 @@ internal sealed class SourceGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext ctx)
     {
-#if DEBUGATTACH
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-#endif
 
         if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             return;
 
-        var classes = new List<INamedTypeSymbol>();
-
-        foreach (var @class in syntaxReceiver.CandidateClasses)
-        {
-            var classSymbol = (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(@class.SyntaxTree).GetDeclaredSymbol(@class)!;
-            if (classSymbol is null)
-                break;
-
-            if (classSymbol.GetAttributes().Any(q => q.AttributeClass?.Name == nameof(gRPCServiceAttribute)))
-                classes.Add(classSymbol);
-        }
-
         var sb = new StringBuilder();
 
-        sb.AppendLine(
-            @"using Microsoft.AspNetCore.Mvc;
-            using Microsoft.AspNetCore.Authorization;
-            using DispatchEndpoints;"
-        );
+        var classes = new List<INamedTypeSymbol>();
+
+        foreach (var @class in syntaxReceiver.CandidateClasses.Select(classSyntax => (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree).GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null))
+        {
+            if (@class.GetAttributes().Any(q => q.AttributeClass?.Name == nameof(gRPCServiceAttribute)))
+                classes.Add(@class);
+
+            sb.AppendLine(
+ @$"namespace Phaeton.gRPC;
+
+public static partial class Extensions
+{{
+    public static IApplicationBuilder MapgRPCServices(this IApplicationBuilder app)
+    {{
+        Console.WriteLine(""elo"");
+
+        return app;
+    }}
+}}
+                "
+            );
+        }
 
         ctx.AddSource(
             "Phaeton.gRPC.g.cs",

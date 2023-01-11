@@ -1,5 +1,8 @@
-﻿namespace Phaeton.gRPC.Generator;
+﻿namespace Phaeton.gRPC;
 
-internal class gRPCServiceAttribute
-{
-}
+[AttributeUsage(
+    AttributeTargets.Class |
+    AttributeTargets.Struct,
+    AllowMultiple = false
+)]
+public sealed class gRPCServiceAttribute : Attribute { }

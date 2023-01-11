@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phaeton.Auth;
+using Grpc.Core.Interceptors;
+using Phaeton.gRPC.Interceptors;
 
 namespace Phaeton.gRPC;
 
@@ -22,16 +24,17 @@ public static partial class Extensions
 
         services.Configure<AuthOptions>(section);
 
-        services.AddGrpc();
+        services.AddGrpc(q =>
+        {
+            q.Interceptors.Add<ServerLoggerInterceptor>();
+        });
 
         return services;
     }
 
-    public static WebApplication UsegRPC(
-        this WebApplication app,
-        Type type
-    )
+    public static IApplicationBuilder MapGrpcServices(this IApplicationBuilder app)
     {
-
+        return app;
     }
 }
+
