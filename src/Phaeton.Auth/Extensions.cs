@@ -79,6 +79,7 @@ public static class Extensions
                 };
             });
 
+        /*
         services.AddAuthentication("Cookies")
             .AddCookie(q =>
             {
@@ -89,7 +90,8 @@ public static class Extensions
                 q.ClientId = config["auth:google:clientId"];
                 q.ClientSecret = config["auth:google:clientSecret"];
             });
-
+        */
+        
         services.AddSingleton<IJsonWebTokenManager, JsonWebTokenManager>();
 
         return services;

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phaeton.Auth;
-using Grpc.Core.Interceptors;
 using Phaeton.gRPC.Interceptors;
 
 namespace Phaeton.gRPC;
@@ -21,14 +21,28 @@ public static partial class Extensions
         var options = section.BindOptions<gRPCOptions>();
         if (!options.Enabled)
             return services;
-
-        services.Configure<AuthOptions>(section);
-
-        services.AddGrpc(q =>
+        
+        switch (options.NodeType)
         {
-            q.Interceptors.Add<ServerLoggerInterceptor>();
-        });
-
+            case "server":
+                services.AddGrpc(q =>
+                {
+                    q.Interceptors.Add<ServerLoggerInterceptor>();
+                });
+                break;
+            case "client":
+            { 
+                var channel = new Channel(
+                    "",
+                    ChannelCredentials.Insecure
+                );
+                
+                // var client = new Greeter.GreeterClient(channel);
+                break;
+            }
+        }
+        services.Configure<AuthOptions>(section);
+        
         return services;
     }
 

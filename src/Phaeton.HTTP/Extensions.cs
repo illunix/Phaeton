@@ -99,7 +99,7 @@ public static class Extensions
     private static async Task<T> ReadAs<T>(this HttpContent content)
         => Deserialize<T>(await content.ReadAsStringAsync());
 
-    public static void AddQueryParams(
+    private static void AddQueryParams(
         ref string uri,
         object? obj
     )

@@ -18,8 +18,8 @@ public class ServerLoggerInterceptor : Interceptor
         UnaryServerMethod<TRequest, TResponse> continuation
     )
     {
-        _logger.LogInformation($"Starting receiving call. Type: {MethodType.Unary}. " +
-                               $"Method: {ctx.Method}.");
+        _logger.LogInformation($"Starting receiving call. Type: {MethodType.Unary}. Method: {ctx.Method}.");
+        
         try
         {
             return await continuation(
@@ -29,7 +29,10 @@ public class ServerLoggerInterceptor : Interceptor
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error thrown by {ctx.Method}.");
+            _logger.LogError(
+                ex,
+                $"Error thrown by {ctx.Method}."
+            );
             throw;
         }
     }

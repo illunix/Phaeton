@@ -58,6 +58,6 @@ public static class Extensions
         if (string.IsNullOrWhiteSpace(app.Name))
             return;
 
-        Console.WriteLine($"{Figgle.FiggleFonts.Twisted.Render($"SMTx")}\t\t\t{app.Name} ({app.Version})\nSocialMediaTradex.com\n");
+        Console.WriteLine($"{Figgle.FiggleFonts.Twisted.Render($"{app.Project}")}\t\t\t{app.Name} ({app.Version})\n\n");
     }
 }
