@@ -16,8 +16,4 @@
     <ProjectReference Include="..\..\src\Phaeton.GenerateMediator\Phaeton.GenerateMediator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Generated\Phaeton.GenerateMediator\Phaeton.GenerateMediator.Generator.MediatorSourceGenerator" />
-  </ItemGroup>
-
 </Project>
