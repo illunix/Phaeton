@@ -2,13 +2,13 @@
 
 namespace Phaeton.Dispatchers;
 
-internal sealed class Dispatcher : IDispatcher
+internal sealed class Mediator : IMediator
 {
     private readonly ICommandDispatcher _commandDispatcher;
     private readonly IEventDispatcher _eventDispatcher;
     private readonly IQueryDispatcher _queryDispatcher;
 
-    public Dispatcher(
+    public Mediator(
         ICommandDispatcher commandDispatcher,
         IEventDispatcher eventDispatcher,
         IQueryDispatcher queryDispatcher

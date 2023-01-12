@@ -27,13 +27,21 @@ internal sealed class SourceGenerator : ISourceGenerator
                 classes.Add(@class);
 
             sb.AppendLine(
- @$"namespace Phaeton.gRPC;
+ @$"
+using Microsoft.Extensions.Options;
+using Grpc.Net.Client;
+
+namespace Phaeton.gRPC;
 
 public static partial class Extensions
 {{
-    public static IApplicationBuilder MapgRPCServices(this IApplicationBuilder app)
+    public static IApplicationBuilder UsegRPC(this IApplicationBuilder app)
     {{
-        Console.WriteLine(""elo"");
+        var options = app.ApplicationServices.GetRequiredService<IOptions<gRPCOptions>>().Value;
+        if (!options.Enabled)
+            return app;
+
+        using var channel = GrpcChannel.ForAddress(options.Url);
 
         return app;
     }}

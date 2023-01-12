@@ -1,5 +1,4 @@
-﻿using Grpc.Core;
-using Microsoft.AspNetCore.Builder;
+﻿using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phaeton.Auth;
@@ -21,6 +20,18 @@ public static partial class Extensions
         var options = section.BindOptions<gRPCOptions>();
         if (!options.Enabled)
             return services;
+
+        switch (options.Url)
+        {
+            case null:
+                throw new ArgumentNullException(nameof(options.Url));
+            default:
+            {
+                if (string.IsNullOrEmpty(options.Url))
+                    throw new ArgumentException(nameof(options.Url));
+                break;
+            }
+        }
         
         switch (options.NodeType)
         {
@@ -32,12 +43,8 @@ public static partial class Extensions
                 break;
             case "client":
             { 
-                var channel = new Channel(
-                    "",
-                    ChannelCredentials.Insecure
-                );
-                
-                // var client = new Greeter.GreeterClient(channel);
+                using var channel = GrpcChannel.ForAddress(options.Url);
+
                 break;
             }
         }
@@ -45,10 +52,4 @@ public static partial class Extensions
         
         return services;
     }
-
-    public static IApplicationBuilder MapGrpcServices(this IApplicationBuilder app)
-    {
-        return app;
-    }
 }
-

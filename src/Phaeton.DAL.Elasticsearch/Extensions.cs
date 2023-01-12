@@ -19,10 +19,13 @@ public static class Extensions
 
         services.Configure<ElasticsearchOptions>(section);
 
-        if (options.Endpoint is null)
-            throw new ArgumentNullException(nameof(options.Endpoint));
-        if (options.Endpoint == string.Empty)
-            throw new ArgumentException(nameof(options.Endpoint));
+        switch (options.Endpoint)
+        {
+            case null:
+                throw new ArgumentNullException(nameof(options.Endpoint));
+            case "":
+                throw new ArgumentException(nameof(options.Endpoint));
+        }
 
         var settings = new ConnectionSettings(new Uri(options.Endpoint))
             .DefaultIndex("ad-offers");

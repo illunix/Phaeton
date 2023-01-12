@@ -1,6 +1,6 @@
 ﻿namespace Phaeton.gRPC;
 
-internal sealed class gRPCOptions
+public sealed class gRPCOptions
 {
     public bool Enabled { get; init; }
     public string? NodeType { get; init; }

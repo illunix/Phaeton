@@ -6,7 +6,7 @@ namespace Phaeton.HTTP;
 
 public static class Extensions
 {
-    public static async Task<T> Get<T>(
+    public static async Task<T?> Get<T>(
         this HttpClient httpClient,
         string uri,
         object? obj = null
@@ -23,7 +23,6 @@ public static class Extensions
         );
 
         var res = await httpClient.GetAsync($"{httpClient.BaseAddress}{uri}");
-        var elo = await res.Content.ReadAs<dynamic>();
 
         if (!res.IsSuccessStatusCode)
             throw new Exception("External");
@@ -54,7 +53,7 @@ public static class Extensions
         res.EnsureSuccessStatusCode();
     }
 
-    public static async Task<T> Post<T>(
+    public static async Task<T?> Post<T>(
         this HttpClient httpClient,
         string uri,
         object obj
@@ -79,7 +78,7 @@ public static class Extensions
         return await res.Content.ReadAs<T>();
     }
 
-    private static JsonSerializerOptions JsonSerializerOptions = new()
+    private static JsonSerializerOptions? JsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
@@ -90,13 +89,13 @@ public static class Extensions
             JsonSerializerOptions
         );
 
-    private static T Deserialize<T>(string json)
+    private static T? Deserialize<T>(string json)
         => JsonSerializer.Deserialize<T>(
             json,
             JsonSerializerOptions
         );
 
-    private static async Task<T> ReadAs<T>(this HttpContent content)
+    private static async Task<T?> ReadAs<T>(this HttpContent content)
         => Deserialize<T>(await content.ReadAsStringAsync());
 
     private static void AddQueryParams(

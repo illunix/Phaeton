@@ -1,6 +1,6 @@
 ﻿namespace Phaeton.Abstractions;
 
-public interface IDispatcher
+public interface IMediator
 {
     Task Send<T>(
         T req,
