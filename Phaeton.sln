@@ -23,13 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.HTTP", "src\Phaeton
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phaeton.Observability", "src\Phaeton.Observability\Phaeton.Observability.csproj", "{F289096B-1313-4935-B823-947AA87A121D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.gRPC.Server.Extensions.Generator", "src\Phaeton.gRPC.Generator\Phaeton.gRPC.Server.Extensions.Generator.csproj", "{7F60A7B9-A509-4DE3-A47D-61362EDB28BB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.Sample.API", "samples\Phaeton.Sample.API\Phaeton.Sample.API.csproj", "{8A3C13D9-F7B1-4C90-96C3-C582BF0657A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{2087850E-8416-4FF0-A4ED-05BDDF755066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.GenerateMediator", "src\Phaeton.GenerateMediator\Phaeton.GenerateMediator.csproj", "{C6DA18E9-C10E-42CA-A103-45A8E3973294}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.Mediator.Generator", "src\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.csproj", "{C6DA18E9-C10E-42CA-A103-45A8E3973294}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,10 +75,6 @@ Global
 		{F289096B-1313-4935-B823-947AA87A121D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F289096B-1313-4935-B823-947AA87A121D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F289096B-1313-4935-B823-947AA87A121D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F60A7B9-A509-4DE3-A47D-61362EDB28BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F60A7B9-A509-4DE3-A47D-61362EDB28BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F60A7B9-A509-4DE3-A47D-61362EDB28BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F60A7B9-A509-4DE3-A47D-61362EDB28BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A3C13D9-F7B1-4C90-96C3-C582BF0657A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A3C13D9-F7B1-4C90-96C3-C582BF0657A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A3C13D9-F7B1-4C90-96C3-C582BF0657A8}.Release|Any CPU.ActiveCfg = Release|Any CPU

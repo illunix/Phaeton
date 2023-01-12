@@ -12,7 +12,7 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
         => ctx.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
 
     public void Execute(GeneratorExecutionContext ctx)
-    {
+    { 
         if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             return;
 
@@ -140,7 +140,7 @@ namespace {@namespace}
         }
 
         ctx.AddSource(
-            "Phaeton.GenerateMediator.g.cs",
+            "Phaeton.Mediator.Generator.g.cs",
             SourceText.From(
                 sb.ToString(),
                 Encoding.UTF8

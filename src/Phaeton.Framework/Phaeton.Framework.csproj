@@ -4,7 +4,29 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Phateon</Title>
+    <Authors>illunix</Authors>
+    <Description>A Microservices Library for ASP.NET Core. This repository contains a collection of libraries that simplify the process of building scalable and high-performance microservices using the ASP.NET Core framework.</Description>
+    <PackageIcon>Phaeton.png</PackageIcon>
+    <RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\Phaeton.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Figgle" Version="0.4.1" />

@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Phaeton.Auth\Phaeton.Auth.csproj" />
-    <ProjectReference Include="..\Phaeton.gRPC.Generator\Phaeton.gRPC.Server.Extensions.Generator.csproj" />
     <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
   </ItemGroup>
 
