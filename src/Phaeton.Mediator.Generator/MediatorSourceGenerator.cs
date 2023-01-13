@@ -34,7 +34,6 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
         foreach (var @class in classes)
         {
             var @namespace = @class.ContainingNamespace.ToDisplayString();
-            var elo = @class.GetMembers().Select(q => q.Name).ToList();
             var handlerMethod = @class.GetMembers()
                 .FirstOrDefault(q => q.Name == "Handler") as IMethodSymbol;
             

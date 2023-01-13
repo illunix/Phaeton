@@ -11,5 +11,5 @@ public sealed class PingPongService : Shared.Protos.PingPongService.PingPongServ
         Empty req,
         ServerCallContext ctx
     )
-        => Task.FromResult(new PingResponse() { Value = "Pong" });
+        => Task.FromResult(new PingResponse { Value = "Pong" });
 }

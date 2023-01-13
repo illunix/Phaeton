@@ -1,6 +1,5 @@
 using Phaeton.Abstractions;
 using Phaeton.Framework;
-using Phaeton.gRPC;
 using Phaeton.Sample.API.Features;
 
 var builder = WebApplication
@@ -21,6 +20,5 @@ app.MapPost(
     .Produces(StatusCodes.Status400BadRequest);
 
 app.UsePhaetonFramework();
-app.MapgRPCServices();
 
 app.Run();

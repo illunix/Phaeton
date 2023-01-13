@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Phaeton.gRPC.Server.Extensions.Generator;
@@ -11,7 +12,7 @@ internal sealed class gRPCExtensionsGenerator : ISourceGenerator
     public void Initialize(GeneratorInitializationContext ctx)
         => ctx.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
 
-    public static List<INamedTypeSymbol> _classes { get; set; }
+    public static List<INamedTypeSymbol> _classes { get; set; } = new();
     
     public void Execute(GeneratorExecutionContext ctx)
     {
@@ -32,12 +33,20 @@ internal sealed class gRPCExtensionsGenerator : ISourceGenerator
             _classes.Add(@class);
             
             sb.AppendLine(
-@$"namespace Phaeton.gRPC;
+@$"using Microsoft.Extensions.Options;
+
+namespace Phaeton.gRPC;
 
 public static class Extensions
 {{
     public static IApplicationBuilder MapgRPCServices(this WebApplication app)
     {{
+        var options = app.Services.GetRequiredService<IOptions<gRPCOptions>>().Value;
+        /*
+        if (!options.Enabled)
+            throw new ArgumentException(nameof(options.Enabled));
+        */
+
         app
             .MapGrpcService<{@class}>();
 
@@ -46,14 +55,20 @@ public static class Extensions
 
     public static IServiceCollection AddgRPCClients(this IServiceCollection services)
     {{
+        var serviceProvider = services.BuildServiceProvider();
+
+        var options = serviceProvider.GetRequiredService<IOptions<gRPCOptions>>().Value;
+        /*
+        if (!options.Enabled)
+            throw new ArgumentException(nameof(options.Enabled));
+        */
+
         services.AddGrpcClient<{@class.BaseType}>(q => {{ }});
 
         return services;
     }}
 }}
 "
-
-
             );
         }
 

@@ -12,11 +12,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shared\Phaeton.Shared.Protos\Phaeton.Shared.Protos.csproj" />
-        <Protobuf Include="..\..\samples\Shared\Phaeton.Shared.Protos\pingpong.proto" GrpcServices="Server" />
-        <ProjectReference Include="..\..\src\Phaeton.gRPC.Extensions.Generator\Phaeton.gRPC.Extensions.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+        <Protobuf Include="..\..\samples\Shared\Phaeton.Shared.Protos\pingpong.proto" GrpcServices="Client" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
-        <ProjectReference Include="..\..\src\Phaeton.gRPC.Extensions.Generator\Phaeton.gRPC.Extensions.Generator.csproj" />
+        <ProjectReference Include="..\..\src\Phaeton.gRPC.Server.Extensions.Generator\Phaeton.gRPC.Server.Extensions.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 
     <ItemGroup>

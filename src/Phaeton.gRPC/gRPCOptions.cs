@@ -1,8 +1,8 @@
 ﻿namespace Phaeton.gRPC;
 
-public sealed class gRPCOptions
+public sealed record gRPCOptions
 {
     public bool Enabled { get; init; }
     public string? NodeType { get; init; }
-    public string? Url { get; init; }
+    public IEnumerable<string>? Addresses { get; init; }
 }
