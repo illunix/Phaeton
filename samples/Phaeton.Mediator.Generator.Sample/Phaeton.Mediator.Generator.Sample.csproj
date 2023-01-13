@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Phaeton.Sample.API</RootNamespace>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -12,7 +13,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
+      <ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
     <ProjectReference Include="..\..\src\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
   </ItemGroup>
 

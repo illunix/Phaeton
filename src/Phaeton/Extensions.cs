@@ -34,7 +34,7 @@ public static class Extensions
         services.Configure<AppOptions>(section);
 
         return services
-            .AddSingleton<IIdGen>(new IdentityGenerator(options.GeneratorId))
+            .AddSingleton<IIdGen>(new IdentityGenerator())
             .AddSingleton<IJsonSerializer, SystemTextJsonSerializer>()
             .Configure<JsonOptions>(jsonOptions =>
             {

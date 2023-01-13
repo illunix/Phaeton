@@ -19,14 +19,14 @@ public sealed class AuthOptions
 
         public JWTOptions()
         {
-            if (!string.IsNullOrEmpty(SecretKey))
-            {
-                SigningKey = new(Encoding.ASCII.GetBytes(SecretKey));
-                SigningCredentials = new(
-                    SigningKey,
-                    SecurityAlgorithms.HmacSha256
-                );
-            }
+            if (string.IsNullOrEmpty(SecretKey)) 
+                return;
+            
+            SigningKey = new(Encoding.ASCII.GetBytes(SecretKey));
+            SigningCredentials = new(
+                SigningKey,
+                SecurityAlgorithms.HmacSha256
+            );
         }
     }
 

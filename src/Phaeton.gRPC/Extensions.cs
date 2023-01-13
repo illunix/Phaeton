@@ -45,6 +45,7 @@ public static partial class Extensions
             { 
                 using var channel = GrpcChannel.ForAddress(options.Url);
 
+                services.AddSingleton(channel);
                 break;
             }
         }

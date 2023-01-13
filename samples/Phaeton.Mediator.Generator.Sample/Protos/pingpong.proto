@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Phaeton.Protos";
+
+service PingPongService {
+	rpc Ping(google.protobuf.Empty) returns (PingResponse);
+}
+
+message PingResponse {
+	string value = 1;
+}

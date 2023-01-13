@@ -2,8 +2,7 @@
 
 public sealed class AppOptions
 {
-    public string Name { get; init; } = string.Empty;
-    public string Version { get; init; } = string.Empty;
-    public string Project { get; init; } = string.Empty;
-    public int GeneratorId { get; set; }
+    public string? Name { get; init; }
+    public string? Version { get; init; }
+    public string? Project { get; init; } 
 }

@@ -1,5 +1,6 @@
 using Phaeton.Abstractions;
 using Phaeton.Framework;
+using Phaeton.gRPC;
 using Phaeton.Sample.API.Features;
 
 var builder = WebApplication
@@ -12,7 +13,7 @@ app.MapPost(
         "/api/weather-forecast",
         async (
             IMediator mediator
-        ) => Results.Ok( await mediator.Send(new GetWeatherForecast.Query()))
+        ) => Results.Ok(await mediator.Send(new GetWeatherForecast.Query()))
     )
     .WithTags("Account")
     .WithName("Sign In")
@@ -20,7 +21,6 @@ app.MapPost(
     .Produces(StatusCodes.Status400BadRequest);
 
 app.UsePhaetonFramework();
+app.MapgRPCServices();
 
 app.Run();
-
-public sealed record Foo() : IQuery<GetWeatherForecast.WeatherForecast>;

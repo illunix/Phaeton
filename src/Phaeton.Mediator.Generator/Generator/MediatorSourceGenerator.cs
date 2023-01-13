@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Phaeton.gRPC.Server.Extensions.Generator;
@@ -13,14 +14,27 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext ctx)
     { 
+#if DEBUG
+        if (!Debugger.IsAttached)
+        {
+            Debugger.Launch();
+        }
+#endif 
         if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             return;
 
         var sb = new StringBuilder();
         
-        foreach (var @class in syntaxReceiver.CandidateClasses.Select(classSyntax => (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree).GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null))
+        var classes = syntaxReceiver.CandidateClasses
+            .Select(classSyntax =>
+                (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree)
+                    .GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null).Where(@class =>
+                @class.GetAttributes().Any(q => q.AttributeClass?.Name == nameof(GenerateMediatorAttribute))).ToList();
+
+        foreach (var @class in classes)
         {
             var @namespace = @class.ContainingNamespace.ToDisplayString();
+            var elo = @class.GetMembers().Select(q => q.Name).ToList();
             var handlerMethod = @class.GetMembers()
                 .FirstOrDefault(q => q.Name == "Handler") as IMethodSymbol;
             
