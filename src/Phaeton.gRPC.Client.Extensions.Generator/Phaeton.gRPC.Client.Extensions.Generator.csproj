@@ -5,10 +5,10 @@
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Phateon.gRPC.Server.Extensions.Generator</RootNamespace>
-        <Title>Phateon.gRPC.Server.Extensions.Generator</Title>
+        <RootNamespace>Phateon.gRPC.Client.Extensions.Generator</RootNamespace>
+        <Title>Phateon.gRPC.Client.Extensions.Generator</Title>
         <Authors>illunix</Authors>
-        <Description>A Phaeton gRPC server extensions source generator</Description>
+        <Description>A Phaeton gRPC client extensions source generator</Description>
         <PackageIcon>Phaeton.png</PackageIcon>
         <RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>

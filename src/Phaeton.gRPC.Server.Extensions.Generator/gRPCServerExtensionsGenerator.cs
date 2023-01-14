@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Phaeton.gRPC.Server.Extensions.Generator;
 
-namespace Phaeton.gRPC.Extensions.Generator;
+namespace Phaeton.gRPC.Server.Extensions.Generator;
 
 [Generator]
 internal sealed class gRPCExtensionsGenerator : ISourceGenerator
@@ -12,11 +12,8 @@ internal sealed class gRPCExtensionsGenerator : ISourceGenerator
     public void Initialize(GeneratorInitializationContext ctx)
         => ctx.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
 
-    public static List<INamedTypeSymbol> _classes { get; set; } = new();
-    
     public void Execute(GeneratorExecutionContext ctx)
     {
-
         if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             return;
 
@@ -30,10 +27,10 @@ internal sealed class gRPCExtensionsGenerator : ISourceGenerator
 
         foreach (var @class in classes)
         {
-            _classes.Add(@class);
-            
             sb.AppendLine(
 @$"using Microsoft.Extensions.Options;
+using Grpc.Net.ClientFactory;
+using Phaeton.gRPC.Interceptors;
 
 namespace Phaeton.gRPC;
 
@@ -63,7 +60,7 @@ public static class Extensions
             throw new ArgumentException(nameof(options.Enabled));
         */
 
-        services.AddGrpcClient<{@class.BaseType}>(q => {{ }});
+        services.AddGrpcClient<{@class.BaseType}>().AddInterceptor<ClientLoggerInterceptor>(InterceptorScope.Client);
 
         return services;
     }}
@@ -73,7 +70,7 @@ public static class Extensions
         }
 
         ctx.AddSource(
-            "Phaeton.gRPC.Extensions.g.cs",
+            "Phaeton.gRPC.Server.Extensions.g.cs",
             SourceText.From(
                 sb.ToString(),
                 Encoding.UTF8

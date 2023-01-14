@@ -17,7 +17,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
-        <ProjectReference Include="..\..\src\Phaeton.gRPC.Server.Extensions.Generator\Phaeton.gRPC.Server.Extensions.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+        <ProjectReference Include="..\..\src\Phaeton.gRPC.Client.Extensions.Generator\Phaeton.gRPC.Client.Extensions.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Grpc.Net.Client;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Phaeton.Auth;
 using Phaeton.gRPC.Interceptors;
@@ -14,12 +12,6 @@ public static partial class Extensions
         IConfiguration config
     )
     {
-#if DEBUG
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-#endif
         var section = config.GetSection("grpc");
         if (!section.Exists())
             return services;
@@ -37,21 +29,7 @@ public static partial class Extensions
                 });
                 break;
             case "client":
-            {
-                foreach (var address in options.Addresses)
-                {
-                    switch (address)
-                    {
-                        case null:
-                            throw new ArgumentNullException(nameof(address));
-                        default:
-                            if (string.IsNullOrEmpty(address))
-                                throw new ArgumentException(nameof(address));
-                            break;
-                    }
-                }
                 break;
-            }
         }
         services.Configure<AuthOptions>(section);
         

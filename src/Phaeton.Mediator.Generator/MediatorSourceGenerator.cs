@@ -104,8 +104,8 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
             {
                 constructorBuilder.AppendLine(
                     $@"public {requestMethodName}HandlerCore({constructorParams})
-                {{{injected}
-                }}"
+                    {{{injected}
+                    }}"
                 ); 
             }
             
