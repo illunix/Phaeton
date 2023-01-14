@@ -5,7 +5,7 @@ using Phaeton.gRPC.Interceptors;
 
 namespace Phaeton.gRPC;
 
-public static partial class Extensions
+public static class Extensions
 {
     public static IServiceCollection AddgRPC(
         this IServiceCollection services,
