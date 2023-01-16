@@ -1,6 +1,13 @@
-﻿namespace Phaeton.DAL.Postgres.Abstractions;
+using System.Numerics;
+
+namespace Phaeton.DAL.Postgres.Abstractions;
+
+public class EntityBase<T> where  T : INumber<T>
+{
+    public T Id { get; init; }
+}
 
 public class EntityBase
 {
-    public long Id { get; init; }
+    public Guid Id { get; init; }
 }

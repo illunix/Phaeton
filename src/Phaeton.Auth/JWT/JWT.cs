@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Phaeton.Auth.JWT;
 
-public sealed class JsonWebToken
+public sealed class JWT
 {
     public string AccessToken { get; init; } = string.Empty;
     public long Expiry { get; init; }

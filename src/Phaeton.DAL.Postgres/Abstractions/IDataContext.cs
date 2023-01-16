@@ -1,6 +1,6 @@
-﻿namespace Phaeton.DAL.Postgres.Abstractions;
+namespace Phaeton.DAL.Postgres.Abstractions;
 
 public interface IDataContext : IDisposable
 {
-    Task<int> SaveChangesAsync();
+    Task<int> SaveChanges();
 }

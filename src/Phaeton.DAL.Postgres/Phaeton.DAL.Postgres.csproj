@@ -1,17 +1,35 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Title>Phaeton.DAL.Postgres</Title>
+        <Authors>illunix</Authors>
+		<Version>1.0.1</Version>
+        <Description>A Phaeton auth package.</Description>
+        <PackageIcon>Phaeton.png</PackageIcon>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <AssemblyVersion></AssemblyVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
-  </ItemGroup>
+    <ItemGroup>
+      <None Include="..\..\assets\Phaeton.png">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+      <None Include="..\..\LICENSE">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
+    </ItemGroup>
 
 </Project>

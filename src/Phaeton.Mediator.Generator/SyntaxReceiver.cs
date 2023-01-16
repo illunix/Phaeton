@@ -1,7 +1,7 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Phaeton.gRPC.Server.Extensions.Generator;
+namespace Phaeton.Mediator.Generator;
 
 internal sealed class SyntaxReceiver : ISyntaxReceiver
 {

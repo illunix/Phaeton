@@ -4,6 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Phaeton.Observability</Title>
+    <Authors>illunix</Authors>
+    <Description>A Phaeton observability package</Description>
+    <PackageIcon>Phaeton.png</PackageIcon>
+    <RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +18,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Phaeton.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

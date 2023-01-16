@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+		<Version>1.0.4</Version>
         <RootNamespace>Phaeton.Mediator.Generator</RootNamespace>
         <Title>Phateon.Mediator.Generator</Title>
         <Authors>illunix</Authors>
@@ -15,15 +16,24 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
     <ItemGroup>
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll">
+			<Pack>True</Pack>
+			<PackagePath>analyzers/dotnet/cs</PackagePath>
+			<Visible>False</Visible>
+		</None>
         <None Include="..\..\assets\Phaeton.png">
           <Pack>True</Pack>
           <PackagePath>\</PackagePath>
+		  <Visible>False</Visible>
         </None>
         <None Update="Phaeton.png">
           <Pack>True</Pack>

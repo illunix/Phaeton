@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +18,12 @@ public static class Extensions
         var section = configuration.GetSection("postgres");
         if (!section.Exists())
             return services;
-
+        
         var options = section.BindOptions<PostgresOptions>();
 
+        if (string.IsNullOrEmpty(options.ConnectionString))
+            throw new ArgumentException(nameof(options.ConnectionString));
+                
         services.Configure<PostgresOptions>(section);
         services.AddDbContext<T, K>(q =>
         {

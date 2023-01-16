@@ -12,7 +12,7 @@ app.MapPost(
         "/api/weather-forecast",
         async (
             IMediator mediator
-        ) => Results.Ok(await mediator.Send(new GetWeatherForecast.Query()))
+        ) => Results.Ok()
     )
     .WithTags("Account")
     .WithName("Sign In")

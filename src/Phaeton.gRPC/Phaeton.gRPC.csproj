@@ -4,6 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Phaeton.gRPC</Title>
+    <Authors>illunix</Authors>
+    <Description>A Phaeton gRPC package</Description>
+    <PackageIcon>Phaeton.png</PackageIcon>
+    <RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -21,6 +26,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Phaeton.Auth\Phaeton.Auth.csproj" />
     <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Phaeton.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

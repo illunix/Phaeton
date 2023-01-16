@@ -6,12 +6,12 @@ using System.Security.Claims;
 
 namespace Phaeton.Auth.JWT;
 
-internal sealed class JsonWebTokenManager : IJsonWebTokenManager
+internal sealed class JWTManager : IJWTManager
 {
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new();
     private AuthOptions.JWTOptions _options;
 
-    public JsonWebTokenManager(IOptions<AuthOptions> options)
+    public JWTManager(IOptions<AuthOptions> options)
     {
         if (options.Value?.JWT is null)
             throw new InvalidOperationException("Missing JWT options.");
@@ -19,7 +19,7 @@ internal sealed class JsonWebTokenManager : IJsonWebTokenManager
         _options = options.Value.JWT;
     }
 
-    public JsonWebToken CreateToken(
+    public JWT CreateToken(
         long userId,
         string email,
         int role

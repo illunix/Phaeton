@@ -1,4 +1,4 @@
-﻿namespace Phaeton.DAL.Postgres;
+namespace Phaeton.DAL.Postgres;
 
 public sealed class PostgresOptions
 {

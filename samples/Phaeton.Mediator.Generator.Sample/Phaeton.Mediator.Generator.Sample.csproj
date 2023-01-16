@@ -14,7 +14,11 @@
 
   <ItemGroup>
       <ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
-    <ProjectReference Include="..\..\src\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+      <ProjectReference Include="..\..\src\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Generated\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.MediatorSourceGenerator\" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Phaeton;
 using Phaeton.Auth.JWT;
 using Phaeton.Auth.JWT.Abstractions;
 using System.Security.Claims;
@@ -92,7 +91,7 @@ public static class Extensions
             });
         */
         
-        services.AddSingleton<IJsonWebTokenManager, JsonWebTokenManager>();
+        services.AddSingleton<IJWTManager, JWTManager>();
 
         return services;
     }

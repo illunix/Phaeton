@@ -1,4 +1,4 @@
-﻿using Phaeton.GenerateMediator;
+﻿using Phaeton.Mediator;
 
 namespace Phaeton.Sample.API.Features;
 

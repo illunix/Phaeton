@@ -2,9 +2,9 @@
 
 namespace Phaeton.Auth.JWT.Abstractions;
 
-public interface IJsonWebTokenManager
+public interface IJWTManager
 {
-    JsonWebToken CreateToken(
+    JWT CreateToken(
         long userId,
         string email,
         int role
