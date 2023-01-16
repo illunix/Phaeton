@@ -3,11 +3,11 @@ using Phaeton.Abstractions;
 
 namespace Phaeton.Dispatchers;
 
-internal sealed class EventDispatcher : IEventDispatcher
+internal sealed class InMemoryEventDispatcher : IEventDispatcher
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public EventDispatcher(IServiceProvider serviceProvider)
+    public InMemoryEventDispatcher(IServiceProvider serviceProvider)
         => _serviceProvider = serviceProvider;
 
     public async Task Publish<T>(

@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Title>Phaeton.HTTP</Title>
+		<Authors>illunix</Authors>
+		<Description>A Phaeton HTTP package</Description>
+		<PackageIcon>Phaeton.png</PackageIcon>
+		<RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Include="..\..\assets\Phaeton.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0-rc2" />
+	  <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.1-beta" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Phaeton.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>

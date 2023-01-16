@@ -3,11 +3,11 @@ using Phaeton.Abstractions;
 
 namespace Phaeton.Dispatchers;
 
-internal sealed class QueryDispatcher : IQueryDispatcher
+internal sealed class InMemoryQueryDIspatcher : IQueryDispatcher
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public QueryDispatcher(IServiceProvider serviceProvider)
+    public InMemoryQueryDIspatcher(IServiceProvider serviceProvider)
         => _serviceProvider = serviceProvider;
 
     public async Task<T> Query<T>(

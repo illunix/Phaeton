@@ -3,11 +3,11 @@ using Phaeton.Abstractions;
 
 namespace Phaeton.Dispatchers;
 
-internal sealed class CommandDispatcher : ICommandDispatcher
+internal sealed class InMemoryCommandDispatcher : ICommandDispatcher
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public CommandDispatcher(IServiceProvider serviceProvider)
+    public InMemoryCommandDispatcher(IServiceProvider serviceProvider)
         => _serviceProvider = serviceProvider;
 
     public async Task Send<T>(

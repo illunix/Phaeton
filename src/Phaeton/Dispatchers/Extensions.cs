@@ -38,7 +38,7 @@ public static class Extensions
     public static IServiceCollection AddDispatchers(this IServiceCollection services)
         => services
             .AddSingleton<IMediator, Mediator>()
-            .AddSingleton<ICommandDispatcher, CommandDispatcher>()
-            .AddSingleton<IEventDispatcher, EventDispatcher>()
-            .AddSingleton<IQueryDispatcher, QueryDispatcher>();
+            .AddSingleton<ICommandDispatcher, InMemoryCommandDispatcher>()
+            .AddSingleton<IEventDispatcher, InMemoryEventDispatcher>()
+            .AddSingleton<IQueryDispatcher, InMemoryQueryDIspatcher>();
 }

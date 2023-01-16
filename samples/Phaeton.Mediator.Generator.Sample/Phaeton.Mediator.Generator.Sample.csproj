@@ -12,13 +12,9 @@
 		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
 	</PropertyGroup>
 
-  <ItemGroup>
-      <ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
-      <ProjectReference Include="..\..\src\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Generated\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.MediatorSourceGenerator\" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Phaeton.Framework" Version="1.0.0" />
+	  <PackageReference Include="Phaeton.Mediator.Generator" Version="1.0.4" />
+	</ItemGroup>
 
 </Project>
