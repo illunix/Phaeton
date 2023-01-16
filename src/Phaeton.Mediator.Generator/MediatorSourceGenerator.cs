@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -8,9 +9,7 @@ namespace Phaeton.Mediator.Generator;
 internal sealed class MediatorSourceGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext ctx)
-    {
-        ctx.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
-    }
+        => ctx.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
 
     public void Execute(GeneratorExecutionContext ctx)
     {
@@ -91,6 +90,8 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
 
             requestBuilder.Append($"public partial record {requestMethodName} : {requestInterface};");
 
+            var validateMethodExist = requestMethod.GetMembers().Any(x => x.Name == "Validate");
+
             var constructorBuilder = new StringBuilder();
 
             var constructorParams =
@@ -114,11 +115,19 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
                 )
             );
 
+            var validateMethod = "";
+            if (commandExist)
+                validateMethod = "Command.Validate";
+            else if (queryExist)
+                validateMethod = "Query.Validate";
+
+            var awaitHandlerMethod = $"await Handler({handlerParams});";
+
             handlerBuilder.Append(
 @$"public async Task{(type is null ? string.Empty : $"<{type}>")} Handle({requestMethodName} request, CancellationToken cancellationToken) 
     {(type is null ?
-        $"\t\t\t=> await Handler({handlerParams});" :
-        $"\t\t\t=> await Handler({handlerParams});")}"
+        $"\t\t{(validateMethodExist ? $"{{\n\t\t\t\t{validateMethod}(request);\n\t\t\t\t{awaitHandlerMethod}\n\t\t\t}}" : $"\t\t\t=> {awaitHandlerMethod}")}" :
+        $"\t\t\t=> {awaitHandlerMethod}")}"
             );
 
             var handlerInterface = "";
