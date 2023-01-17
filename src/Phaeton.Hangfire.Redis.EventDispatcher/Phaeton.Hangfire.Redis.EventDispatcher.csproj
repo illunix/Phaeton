@@ -5,6 +5,7 @@
 		<Nullable>enable</Nullable>
 		<Title>Phaeton.HTTP</Title>
 		<Authors>illunix</Authors>
+		<Version>1.0.1</Version>
 		<Description>A Phaeton HTTP package</Description>
 		<PackageIcon>Phaeton.png</PackageIcon>
 		<RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>

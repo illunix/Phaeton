@@ -9,7 +9,7 @@ namespace Phaeton.Dispatchers;
 
 public static class Extensions
 {
-    public static IServiceCollection AddHangfireEventDispatcher(
+    public static IServiceCollection AddRedisEventDispatcher(
         this IServiceCollection services,
         IConfiguration config
     )
@@ -19,11 +19,15 @@ public static class Extensions
             return services;
 
         var options = section.BindOptions<EventDispatcherOptions>();
-        if (!options.InMemory)
+        if (
+            !options.InMemory &&
+            options.Redis is not null
+        )
             return services;
 
-        if (options.Redis is null)
-            throw new ArgumentException("Redis section is null, use in memory event dispatcher or create redis section.");
+        if (options.Redis is not null)
+            if (string.IsNullOrEmpty(options.Redis.ConnectionString))
+                throw new ArgumentException(nameof(options.Redis.ConnectionString));
 
         services.Configure<EventDispatcherOptions>(section);
 

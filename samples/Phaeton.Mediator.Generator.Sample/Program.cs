@@ -19,6 +19,23 @@ app.MapPost(
     .Produces(StatusCodes.Status201Created)
     .Produces(StatusCodes.Status400BadRequest);
 
+app.MapPost(
+    "/api/sign-up",
+async (
+        SignUp.Command req,
+        IMediator mediator
+    ) =>
+{
+    await mediator.Send(req);
+
+    return Results.NoContent();
+}
+)
+    .WithTags("Account")
+    .WithName("Sign up")
+    .Produces(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status400BadRequest);
+
 app.UsePhaetonFramework();
 
 app.Run();

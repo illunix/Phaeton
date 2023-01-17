@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Version>1.0.1</Version>
     <Title>Phaeton.API</Title>
     <Authors>illunix</Authors>
     <Description>A Phaeton API package</Description>

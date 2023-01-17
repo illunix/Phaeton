@@ -9,22 +9,6 @@ namespace Phaeton.API.Exceptions.Mappers;
 
 internal sealed class ExceptionToResponseMapper : IExceptionToResponseMapper
 {
-    private readonly ExceptionResponse _defaultResponse =
-        new(new ErrorsResponse(new Error(
-            "error",
-            "There was an error.")
-        ),
-        HttpStatusCode.InternalServerError
-    );
-
-    private readonly ExceptionResponse _communicationResponse = new(
-        new ErrorsResponse(new Error(
-            "internal_service_http_communication",
-            "There was an internal HTTP service communication error.")
-        ),
-        HttpStatusCode.InternalServerError
-    );
-
     private readonly ConcurrentDictionary<Type, string> _codes = new();
 
     public ExceptionResponse Map(Exception ex)
@@ -37,20 +21,39 @@ internal sealed class ExceptionToResponseMapper : IExceptionToResponseMapper
                 )),
                 HttpStatusCode.BadRequest
             ),
-            HttpRequestException _ => _communicationResponse,
-            _ => _defaultResponse
+            ArgumentException _ => new(
+                new ErrorsResponse(new Error(
+                    GetErrorCode(ex),
+                    ex.Message
+                )),
+                HttpStatusCode.BadRequest
+            ),
+            HttpRequestException _ => new(
+                new ErrorsResponse(new Error(
+                    "internal_service_http_communication",
+                    "There was an internal HTTP service communication error.")
+                ),
+                HttpStatusCode.InternalServerError
+            ),
+            _ => new(new ErrorsResponse(new Error(
+                    "error",
+                    "There was an error.")
+                ),
+                HttpStatusCode.InternalServerError
+            )
         };
 
-    private record Error(
+    private sealed record Error(
         string Code,
         string Message
     );
 
-    private record ErrorsResponse(params Error[] Errors);
+    private sealed record ErrorsResponse(params Error[] Errors);
 
-    private string GetErrorCode(object exception)
+    private string GetErrorCode(object ex)
     {
-        var type = exception.GetType();
+        var type = ex.GetType();
+
         return _codes.GetOrAdd(
             type,
             type.Name
