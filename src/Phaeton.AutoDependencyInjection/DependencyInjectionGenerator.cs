@@ -15,12 +15,6 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext ctx)
     {
-#if DEBUG
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-#endif 
         if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             return;
 
