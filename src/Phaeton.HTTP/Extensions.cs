@@ -89,11 +89,11 @@ public static class Extensions
             JsonSerializerOptions
         );
 
-    private static T? Deserialize<T>(string json)
+    private static T Deserialize<T>(string json)
         => JsonSerializer.Deserialize<T>(
             json,
             JsonSerializerOptions
-        );
+        )!;
 
     private static async Task<T?> ReadAs<T>(this HttpContent content)
         => Deserialize<T>(await content.ReadAsStringAsync());

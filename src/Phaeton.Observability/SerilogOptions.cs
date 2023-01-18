@@ -2,19 +2,19 @@
 
 public sealed class SerilogOptions
 {
-    public string Level { get; set; } = string.Empty;
-    public ConsoleOptions Console { get; set; } = new();
-    public SeqOptions Seq { get; set; } = new();
+    public string? Level { get; init; }
+    public ConsoleOptions? Console { get; init; }
+    public SeqOptions? Seq { get; init; }
 
     public sealed class ConsoleOptions
     {
-        public bool Enabled { get; set; }
+        public bool Enabled { get; init; }
     }
 
     public sealed class SeqOptions
     {
-        public bool Enabled { get; set; }
-        public string Url { get; set; } = string.Empty;
-        public string ApiKey { get; set; } = string.Empty;
+        public bool Enabled { get; init; }
+        public string? Url { get; init; } 
+        public string? ApiKey { get; init; }
     }
 }
