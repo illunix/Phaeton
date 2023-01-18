@@ -40,11 +40,19 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
                 ";",
                 string.Empty
             );
+
+            if (value.Contains("Services"))
+                value = value.Replace(
+                    "Services",
+                    string.Empty
+                );
         };
 
         foreach (var @class in classes)
         {
             var namespaceName = @class.GetNamespaceName();
+            var hasServicesInNamespace = namespaceName.Contains("Services");
+
             if (string.IsNullOrEmpty(namespaceName))
                 return;
 
@@ -58,7 +66,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
             if (serviceLifetime is null)
                 return;
 
-            registrationBuilder.AppendLine($"services.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}.Abstractions.{@class.BaseType.Name}"}, {@class}>()\n");
+            registrationBuilder.AppendLine($"services.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions")}.{@class.BaseType.Name}"}, {@class}>();\n");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -75,6 +83,8 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
         foreach (var @class in classes)
         {
             var namespaceName = @class.GetNamespaceName();
+            var hasServicesInNamespace = namespaceName.Contains("Services");
+
             if (string.IsNullOrEmpty(namespaceName))
                 return;
 
@@ -116,7 +126,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
             }
 
             interfacesBuilder.AppendLine(
-                $"namespace {namespaceName}.Abstractions\n{{" +
+                $"namespace {namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions")}\n{{" +
                 $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\t" +
                 $"{membersBuilder}\t}}\n}}"
             );
