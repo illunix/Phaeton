@@ -15,6 +15,12 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext ctx)
     {
+#if DEBUG
+            if (!Debugger.IsAttached)
+            {
+                Debugger.Launch();
+            }
+#endif
         if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             return;
 
@@ -52,8 +58,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
             if (serviceLifetime is null)
                 return;
 
-            registrationBuilder.AppendLine("services");
-            registrationBuilder.AppendLine($"\t\t\t\t.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}.Abstractions.{@class.BaseType.Name}"}, {@class}>();\n");
+            registrationBuilder.AppendLine($"services.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}.Abstractions.{@class.BaseType.Name}"}, {@class}>()\n");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -89,10 +94,21 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
                     case SymbolKind.Field:
                         var field = member as IFieldSymbol;
 
+                        if (field.Name.Contains("BackingField"))
+                            break;
+
                         membersBuilder.AppendLine($"\t\n\t\t{field.Type} {member.Name} {{ get; set; }}");
                         break;
                     case SymbolKind.Method:
                         var method = member as IMethodSymbol;
+
+                        if (
+                           method.Name.StartsWith("get_") ||
+                           method.Name.StartsWith("set_") ||
+                           method.Name.StartsWith("private_set_") ||
+                           method.Name.StartsWith("init_")
+                        )
+                            break;
 
                         membersBuilder.AppendLine($"\t\n\t\t{method.ReturnType} {member.Name}();");
                         break;

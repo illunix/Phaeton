@@ -12,12 +12,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Phaeton.AutoDependencyInjection\Phaeton.DependencyInjection.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+		<ProjectReference Include="..\..\src\Phaeton.DependencyInjection.Generator\Phaeton.DependencyInjection.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 		<ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Generated\Phaeton.DependencyInjection.Generator\" />
 	  <Folder Include="Generated\Phaeton.DependencyInjection.Generator\Phaeton.DependencyInjection.Generator.DependencyInjectionGenerator\" />
 	</ItemGroup>
 	
