@@ -11,17 +11,17 @@ namespace Phaeton.DependencyInjection.Generator;
 public sealed class DependencyInjectionGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext ctx)
-        => ctx.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
+        => ctx.RegisterForSyntaxNotifications(() => new DependencyInjectionGeneratorSyntaxReceiver());
 
     public void Execute(GeneratorExecutionContext ctx)
     {
 #if DEBUG
-            if (!Debugger.IsAttached)
-            {
-                Debugger.Launch();
-            }
-#endif
-        if (ctx.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
+        if (!Debugger.IsAttached)
+        {
+            Debugger.Launch();
+        }
+#endif 
+        if (ctx.SyntaxReceiver is not DependencyInjectionGeneratorSyntaxReceiver syntaxReceiver)
             return;
 
         var sourceBuilder = new StringBuilder();
@@ -107,6 +107,14 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
                         if (field.Name.Contains("BackingField"))
                             break;
 
+                        if (
+                            field.CanBeReferencedByName &&
+                            field.IsReadOnly &&
+                            !field.IsStatic &&
+                            !field.HasInitializer()
+                        )
+                            break;
+
                         membersBuilder.AppendLine($"\t\n\t\t{field.Type} {member.Name} {{ get; set; }}");
                         break;
                     case SymbolKind.Method:
@@ -126,7 +134,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
             }
 
             interfacesBuilder.AppendLine(
-                $"namespace {namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions")}\n{{" +
+                $"namespace {namespaceName}{(hasServicesInNamespace ? "Abstractions.Services." : "Abstractions.")}\n{{" +
                 $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\t" +
                 $"{membersBuilder}\t}}\n}}"
             );

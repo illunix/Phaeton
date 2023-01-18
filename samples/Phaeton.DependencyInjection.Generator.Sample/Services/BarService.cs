@@ -3,10 +3,7 @@
 namespace Phaeton.DependencyInjection.Generator.Sample.Services;
 
 [GenerateInterfaceAndRegisterIt(ServiceLifetime.Singleton)]
-public sealed partial class FooService : IFooService
+public sealed partial class BarService : IBarService
 {
-    private readonly IBarService _barService;
-
-    public void Bar()
-        => _barService.DoSomething();
+    public void DoSomething() { }
 }

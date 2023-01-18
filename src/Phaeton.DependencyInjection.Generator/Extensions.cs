@@ -5,6 +5,24 @@ namespace Phaeton.Generator.Extensions;
 
 public static class Extensions
 {
+    public static IEnumerable<INamedTypeSymbol> GetSymbols<T>(
+        this T syntaxReceiver,
+        GeneratorExecutionContext ctx
+    ) where T : ISyntaxReceiver
+        => ((IEnumerable<ClassDeclarationSyntax>)syntaxReceiver
+            .GetType()
+            .GetProperty("CandidateClasses")
+            .GetValue(
+                syntaxReceiver,
+                null
+            ))
+            .Select(q =>
+                (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(q.SyntaxTree)
+                    .GetDeclaredSymbol(q)!
+            )
+            .TakeWhile(q => q is not null)
+            .ToList();
+
     public static IEnumerable<INamedTypeSymbol> GetSymbolsWithAttribute<T>(
         this T syntaxReceiver,
         GeneratorExecutionContext ctx,
@@ -53,4 +71,7 @@ public static class Extensions
 
         return members;
     }
+
+    public static bool HasInitializer(this IFieldSymbol @field)
+        => (@field.DeclaringSyntaxReferences.ElementAtOrDefault(0)?.GetSyntax() as VariableDeclaratorSyntax)?.Initializer != null;
 }
