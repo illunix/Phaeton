@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Generated\" />
+	  <Folder Include="Generated\Phaeton.DependencyInjection.Generator\" />
 	  <Folder Include="Generated\Phaeton.DependencyInjection.Generator\Phaeton.DependencyInjection.Generator.DependencyInjectionGenerator\" />
 	</ItemGroup>
 	

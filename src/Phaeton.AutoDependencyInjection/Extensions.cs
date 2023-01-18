@@ -41,4 +41,16 @@ public static class Extensions
         => attr.ConstructorArguments
             .Select(q => q.Value)
             .FirstOrDefault();
+
+    public static IEnumerable<ISymbol> GetMembersWithoutCtor(this INamedTypeSymbol symbol)
+    {
+        var members = symbol.GetMembers();
+
+        members = members.Remove(members
+            .Where(q => q.Name == ".ctor")
+            .FirstOrDefault()
+        );
+
+        return members;
+    }
 }

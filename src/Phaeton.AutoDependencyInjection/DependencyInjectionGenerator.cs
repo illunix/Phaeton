@@ -59,7 +59,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
                 return;
 
             registrationBuilder.AppendLine("services");
-            registrationBuilder.AppendLine($"\t\t\t\t.Add{((ServiceLifetime)serviceLifetime).ToString()}<{@class}, {$"{namespaceName}.Abstractions.{@class.BaseType.Name}"}>();\n");
+            registrationBuilder.AppendLine($"\t\t\t\t.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}.Abstractions.{@class.BaseType.Name}"}, {@class}>();\n");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -83,26 +83,32 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
 
             var membersBuilder = new StringBuilder();
 
-            foreach (var member in @class.GetMembers())
+            foreach (var member in @class.GetMembersWithoutCtor())
             {
                 switch (member.Kind)
                 {
+                    case SymbolKind.Property:
+                        var prop = member as IPropertySymbol;
+
+                        membersBuilder.AppendLine($"\t\n\t\t{prop.Type} {member.Name} {{ get; set; }}");
+                        break;
+                    case SymbolKind.Field:
+                        var field = member as IFieldSymbol;
+
+                        membersBuilder.AppendLine($"\t\n\t\t{field.Type} {member.Name} {{ get; set; }}");
+                        break;
                     case SymbolKind.Method:
-                        member = member;
+                        var method = member as IMethodSymbol;
+
+                        membersBuilder.AppendLine($"\t\n\t\t{method.ReturnType} {member.Name}();");
                         break;
                 }
-                if (handlerMethod?.ReturnType is not INamedTypeSymbol handlerMethodReturnType)
-                {
-                    return string.Empty;
-                }
-
-                membersBuilder.AppendLine($"\t{member} {member.Name}();");
             }
 
             interfacesBuilder.AppendLine(
                 $"namespace {namespaceName}.Abstractions\n{{" +
-                $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\n\t" +
-                $"{membersBuilder}}}\n}}"
+                $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\t" +
+                $"{membersBuilder}\t}}\n}}"
             );
         }
 
