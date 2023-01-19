@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Phaeton.DependencyInjection.Generator;
 
-internal sealed class DependencyInjectionGeneratorSyntaxReceiver : ISyntaxReceiver
+internal sealed class InterfaceDefinitionsAndExtensionsSyntaxReceiver : ISyntaxReceiver
 {
     public List<ClassDeclarationSyntax> CandidateClasses { get; } = new();
 

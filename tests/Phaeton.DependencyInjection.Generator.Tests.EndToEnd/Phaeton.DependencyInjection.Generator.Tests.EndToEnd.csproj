@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Phaeton.AutoDependencyInjection\Phaeton.DependencyInjection.Generator.csproj" />
+    <ProjectReference Include="..\..\src\Phaeton.DependencyInjection.Generator\Phaeton.DependencyInjection.Generator.csproj" />
   </ItemGroup>
 
 </Project>

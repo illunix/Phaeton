@@ -1,27 +1,19 @@
-﻿using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Phaeton.AutoDependencyInjection.Generator;
 using Phaeton.Generator.Extensions;
 
 namespace Phaeton.DependencyInjection.Generator;
 
 [Generator]
-public sealed class DependencyInjectionGenerator : ISourceGenerator
+public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext ctx)
-        => ctx.RegisterForSyntaxNotifications(() => new DependencyInjectionGeneratorSyntaxReceiver());
+        => ctx.RegisterForSyntaxNotifications(() => new InterfaceDefinitionsAndExtensionsSyntaxReceiver());
 
     public void Execute(GeneratorExecutionContext ctx)
     {
-#if DEBUG
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-#endif 
-        if (ctx.SyntaxReceiver is not DependencyInjectionGeneratorSyntaxReceiver syntaxReceiver)
+        if (ctx.SyntaxReceiver is not InterfaceDefinitionsAndExtensionsSyntaxReceiver syntaxReceiver)
             return;
 
         var sourceBuilder = new StringBuilder();
@@ -66,7 +58,7 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
             if (serviceLifetime is null)
                 return;
 
-            registrationBuilder.AppendLine($"services.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions")}.{@class.BaseType.Name}"}, {@class}>();\n");
+            registrationBuilder.Append($"services.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions")}.{@class.BaseType.Name}"}, {@class}>();\n");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -134,16 +126,16 @@ public sealed class DependencyInjectionGenerator : ISourceGenerator
             }
 
             interfacesBuilder.AppendLine(
-                $"namespace {namespaceName}{(hasServicesInNamespace ? "Abstractions.Services." : "Abstractions.")}\n{{" +
+                $"namespace {namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions.")}\n{{" +
                 $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\t" +
-                $"{membersBuilder}\t}}\n}}"
+                $"{membersBuilder}\t}}\n}}\n"
             );
         }
 
         sourceBuilder.AppendLine(interfacesBuilder.ToString());
 
         ctx.AddSource(
-            "Phaeton.DependencyInjection.g.cs",
+            "Phaeton.Interfaces.g.cs",
             SourceText.From(
                 sourceBuilder.ToString(),
                 Encoding.UTF8

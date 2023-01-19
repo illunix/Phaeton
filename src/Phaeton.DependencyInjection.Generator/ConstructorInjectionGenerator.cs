@@ -1,9 +1,6 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
+﻿using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
 using System.Text;
-using System.Diagnostics;
-using Phaeton.DependencyInjection.Generator;
 using Phaeton.Generator.Extensions;
 
 namespace Phaeton.DependencyInjection.Generator
@@ -52,10 +49,10 @@ namespace Phaeton.DependencyInjection.Generator
 
             var fields = @class.GetMembers().OfType<IFieldSymbol>()
                 .Where(x => x.CanBeReferencedByName && x.IsReadOnly && !x.IsStatic && !x.HasInitializer())
-                .Select(it => new { Namespace = it.ContainingNamespace.Name.Replace("Services", string.Empty), Type = it.Type.ToDisplayString(), ParameterName = ToCamelCase(it.Name), it.Name })
+                .Select(it => new { Namespace = it.ContainingNamespace.ToDisplayString(), Type = it.Type.ToDisplayString(), ParameterName = ToCamelCase(it.Name), it.Name })
                 .ToList();
 
-            var arguments = fields.Select(it => $"{(it.Namespace.Contains("Service") ? $"{it.Namespace}.Abstractions.Services" : $"{it.Namespace}.Abstractions")}.{it.Type} {it.ParameterName}");
+            var arguments = fields.Select(it => $"{(it.Namespace.Contains("Services") ? it.Namespace.Replace("Services", "Abstractions.Services") : it.Namespace)}.{it.Type} {it.ParameterName}");
 
             var injections = new StringBuilder();
 

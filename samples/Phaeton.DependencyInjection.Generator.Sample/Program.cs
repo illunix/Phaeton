@@ -15,7 +15,12 @@ app.MapPost(
     "/api/foo",
     async (
         IFooService fooService
-    ) => { return Results.Ok(fooService.Bar()); }
+    ) => 
+    {
+        fooService.Bar();
+
+        return Results.Ok();
+    }
 );
 
 app.UsePhaetonFramework();
