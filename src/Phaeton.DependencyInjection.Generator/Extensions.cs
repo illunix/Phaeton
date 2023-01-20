@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Phaeton.Generator.Extensions;
@@ -47,7 +48,7 @@ public static class Extensions
             .ToList();
 
     public static string? GetNamespaceName(this INamedTypeSymbol symbol)
-        => symbol.ContainingNamespace.ToDisplayString();
+        => $"{symbol.ContainingNamespace};";
 
     public static AttributeData? GetAttributeByName(
         this INamedTypeSymbol symbol,
@@ -73,5 +74,40 @@ public static class Extensions
     }
 
     public static bool HasInitializer(this IFieldSymbol @field)
-        => (@field.DeclaringSyntaxReferences.ElementAtOrDefault(0)?.GetSyntax() as VariableDeclaratorSyntax)?.Initializer != null;
+    {
+        var equalsSyntax = @field.DeclaringSyntaxReferences[0].GetSyntax() switch
+        {
+            PropertyDeclarationSyntax property => property.Initializer,
+            VariableDeclaratorSyntax variable => variable.Initializer,
+            _ => throw new Exception("Unknown declaration syntax")
+        };
+
+        if (
+            equalsSyntax is null ||
+            equalsSyntax.Value is null ||
+            equalsSyntax.Kind() is not SyntaxKind.EqualsValueClause
+        )
+            return false;
+
+        return true;
+    }
+
+    public static bool HasInitializer(this IPropertySymbol prop)
+    {
+        var equalsSyntax = prop.DeclaringSyntaxReferences[0].GetSyntax() switch
+        {
+            PropertyDeclarationSyntax property => property.Initializer,
+            VariableDeclaratorSyntax variable => variable.Initializer,
+            _ => throw new Exception("Unknown declaration syntax")
+        };
+
+        if (
+            equalsSyntax is null ||
+            equalsSyntax.Value is null ||
+            equalsSyntax.Kind() is not SyntaxKind.EqualsValueClause
+        )
+            return false;
+
+        return true;
+    }
 }

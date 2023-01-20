@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Phaeton.Generator.Extensions;
@@ -19,46 +20,31 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
         var sourceBuilder = new StringBuilder();
         var registrationBuilder = new StringBuilder();
 
-        sourceBuilder.AppendLine("using Phaeton.DependencyInjection;\n");
+        sourceBuilder.AppendLine("using Microsoft.Extensions.DependencyInjection;\n");
 
         var classes = syntaxReceiver.GetSymbolsWithAttribute(
             ctx,
             nameof(GenerateInterfaceAndRegisterItAttribute)
         );
 
-        var removeSemicolon = (ref string value) =>
-        {
-            value = value.Replace(
-                ";",
-                string.Empty
-            );
-
-            if (value.Contains("Services"))
-                value = value.Replace(
-                    "Services",
-                    string.Empty
-                );
-        };
-
         foreach (var @class in classes)
         {
             var namespaceName = @class.GetNamespaceName();
-            var hasServicesInNamespace = namespaceName.Contains("Services");
-
             if (string.IsNullOrEmpty(namespaceName))
-                return;
+                continue;
 
-            removeSemicolon(ref namespaceName);
+            if (namespaceName.Contains("Services;"))
+                namespaceName = namespaceName.Replace("Services;", "Abstractions.Services");
 
             var attr = @class.GetAttributeByName(nameof(GenerateInterfaceAndRegisterItAttribute));
             if (attr is null)
-                return;
+                continue;
 
             var serviceLifetime = attr.GetAttributeFirstConstructorArgValue();
             if (serviceLifetime is null)
-                return;
+                continue;
 
-            registrationBuilder.Append($"services.Add{((ServiceLifetime)serviceLifetime).ToString()}<{$"{namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions")}.{@class.BaseType.Name}"}, {@class}>();\n");
+            registrationBuilder.Append($"services.Add{((Lifetime)serviceLifetime).ToString()}<{$"{namespaceName}.{@class.BaseType.Name}"}, {@class}>();\n");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -75,12 +61,11 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
         foreach (var @class in classes)
         {
             var namespaceName = @class.GetNamespaceName();
-            var hasServicesInNamespace = namespaceName.Contains("Services");
-
             if (string.IsNullOrEmpty(namespaceName))
-                return;
+                continue;
 
-            removeSemicolon(ref namespaceName);
+            if (namespaceName.Contains("Services;"))
+                namespaceName = namespaceName.Replace("Services;", "Abstractions.Services");
 
             var membersBuilder = new StringBuilder();
 
@@ -91,6 +76,17 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                     case SymbolKind.Property:
                         var prop = member as IPropertySymbol;
 
+                        if (
+                            !prop.CanBeReferencedByName &&
+                            !prop.IsReadOnly
+                        )
+                            break;
+                        else if (
+                            prop.IsStatic ||
+                            !prop.HasInitializer()
+                        )
+                            break;
+
                         membersBuilder.AppendLine($"\t\n\t\t{prop.Type} {member.Name} {{ get; set; }}");
                         break;
                     case SymbolKind.Field:
@@ -100,9 +96,12 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                             break;
 
                         if (
-                            field.CanBeReferencedByName &&
-                            field.IsReadOnly &&
-                            !field.IsStatic &&
+                            !field.CanBeReferencedByName &&
+                            !field.IsReadOnly
+                        )
+                            break;
+                        else if (
+                            field.IsStatic ||
                             !field.HasInitializer()
                         )
                             break;
@@ -111,6 +110,14 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                         break;
                     case SymbolKind.Method:
                         var method = member as IMethodSymbol;
+
+                        if (
+                            !method.CanBeReferencedByName &&
+                            !method.IsReadOnly
+                        )
+                            break;
+                        else if (method.IsStatic)
+                            break;
 
                         if (
                            method.Name.StartsWith("get_") ||
@@ -126,7 +133,7 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
             }
 
             interfacesBuilder.AppendLine(
-                $"namespace {namespaceName}{(hasServicesInNamespace ? "Abstractions.Services" : "Abstractions.")}\n{{" +
+                $"namespace {namespaceName}\n{{" +
                 $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\t" +
                 $"{membersBuilder}\t}}\n}}\n"
             );

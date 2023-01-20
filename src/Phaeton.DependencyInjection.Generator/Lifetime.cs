@@ -1,6 +1,6 @@
 ﻿namespace Phaeton.DependencyInjection;
 
-public enum ServiceLifetime
+public enum Lifetime
 {
     Singleton,
     Scoped,

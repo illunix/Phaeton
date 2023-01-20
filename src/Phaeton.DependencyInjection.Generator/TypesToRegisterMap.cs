@@ -8,5 +8,5 @@ internal sealed class TypesToRegisterMap<T, K>
 {
     public T? Class { get; }
     public K? Interface { get;  }
-    public ServiceLifetime? ServiceLifetime { get; set; }
+    public Lifetime? ServiceLifetime { get; set; }
 }

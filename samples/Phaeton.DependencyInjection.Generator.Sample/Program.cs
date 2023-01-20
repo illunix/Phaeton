@@ -1,7 +1,6 @@
-using Phaeton.Abstractions;
 using Phaeton.Framework;
 using Phaeton.DependencyInjection;
-using Phaeton.DependencyInjection.Generator.Sample.Abstractions.Services;
+using SocialMediaTradex.Services.Users.Core.Abstractions.Services;
 
 var builder = WebApplication
     .CreateBuilder(args)
@@ -17,7 +16,6 @@ app.MapPost(
         IFooService fooService
     ) => 
     {
-        fooService.Bar();
 
         return Results.Ok();
     }
