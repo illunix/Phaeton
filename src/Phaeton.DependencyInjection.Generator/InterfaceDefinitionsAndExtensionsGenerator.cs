@@ -44,7 +44,7 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
             if (lifeTime is null)
                 continue;
 
-            registrationBuilder.Append($"services.Add{((Lifetime)lifeTime).ToString()}<{$"{namespaceName}.{@class.BaseType.Name}"}, {@class}>();\n");
+            registrationBuilder.AppendLine($"services.Add{((Lifetime)lifeTime).ToString()}<{$"{namespaceName}.{@class.BaseType.Name}"}, {@class}>();");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -125,7 +125,13 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                         )
                             break;
 
-                        membersBuilder.AppendLine($"\t\n\t\t{method.ReturnType} {member.Name}();");
+                        var parameters = method.Parameters
+                            .ToDictionary(
+                                q => q.Type,
+                                q => q.Name
+                            );
+
+                        membersBuilder.AppendLine($"\t\n\t\t{method.ReturnType} {member.Name}({(parameters.Any() ? string.Join(", ", parameters.Select(q => $"{q.Key} {q.Value}")) : string.Empty)});");
                         break;
                 }
             }

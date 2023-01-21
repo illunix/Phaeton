@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis;
 using System.Text;
 using Phaeton.Generator.Extensions;
-using System.Diagnostics;
 
 namespace Phaeton.DependencyInjection.Generator;
 
@@ -64,7 +63,37 @@ internal sealed class ConstructorInjectionGenerator : ISourceGenerator
             .Select(it => new { Namespace = interfaceNamespaceName, Type = it.Type.ToDisplayString(), ParameterName = ToCamelCase(it.Name), it.Name })
             .ToList();
 
-        var arguments = fields.Select(it => $"{(it.Namespace.Contains("Services;") ? it.Namespace.Replace("Services;", "Abstractions.Services") : it.Namespace)}.{it.Type} {it.ParameterName}");
+        var arguments = new List<string>();
+
+        foreach (var field in fields)
+        {
+            var @namespace = "";
+
+            var isNamespaceStartsWithSameChars = field.Namespace.StartsWith(field.Type.Split('.')[0]);
+
+            if (
+                !isNamespaceStartsWithSameChars &&
+                field.Type.Contains('.')
+            )
+                @namespace = field.Type;
+            else
+                @namespace = $"{field.Namespace}.{field.Type}";
+
+            if (
+                field.Namespace.Contains("Services;") &&
+                isNamespaceStartsWithSameChars
+            )
+                @namespace = field.Namespace.Replace(
+                    "Services;", 
+                    "Abstractions.Services"
+                );
+            else if (isNamespaceStartsWithSameChars)
+                @namespace = field.Namespace;
+
+            arguments.Add($"{@namespace} {field.ParameterName}");
+        }
+
+        // var arguments = fields.Select(it => $"{(it.Namespace.Contains("Services;") ? it.Namespace.Replace("Services;", "Abstractions.Services") : it.Namespace)}.{it.Type} {it.ParameterName}");
 
         var injections = new StringBuilder();
 
