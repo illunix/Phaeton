@@ -56,10 +56,23 @@ public static class Extensions
     )
         => symbol.GetAttributes().FirstOrDefault(q => q.AttributeClass?.Name == attrName);
 
-    public static object? GetAttributeFirstConstructorArgValue(this AttributeData attr)
+    public static object? GetAttributeConstructorArgValueByIndex(
+        this AttributeData attr,
+        int index
+    )
         => attr.ConstructorArguments
+            .ElementAt(index)
+            .Value;
+
+    public static IEnumerable<object>? GetAttributeConstructorArgValuesByIndex(
+        this AttributeData attr,
+        int index
+    )
+        => attr.ConstructorArguments
+            .ElementAt(index)
+            .Values
             .Select(q => q.Value)
-            .FirstOrDefault();
+            .ToList();
 
     public static IEnumerable<ISymbol> GetMembersWithoutCtor(this INamedTypeSymbol symbol)
     {

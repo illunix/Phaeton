@@ -4,6 +4,7 @@
 public sealed class GenerateInterfaceAndRegisterItAttribute : Attribute 
 {
     public GenerateInterfaceAndRegisterItAttribute(
-        Lifetime serviceLifetime
+        Lifetime lifeTime,
+        params Type[] baseTypes
     ) { }
 }

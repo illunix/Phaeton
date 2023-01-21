@@ -14,12 +14,6 @@ internal sealed class ConstructorInjectionGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext ctx)
     {
-#if DEBUG
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-#endif 
         if (ctx.SyntaxReceiver is not ConstructorInjectionGeneratorSyntaxReceiver syntaxReceiver)
             return;
 

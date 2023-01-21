@@ -40,11 +40,11 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
             if (attr is null)
                 continue;
 
-            var serviceLifetime = attr.GetAttributeFirstConstructorArgValue();
-            if (serviceLifetime is null)
+            var lifeTime = attr.GetAttributeConstructorArgValueByIndex(0);
+            if (lifeTime is null)
                 continue;
 
-            registrationBuilder.Append($"services.Add{((Lifetime)serviceLifetime).ToString()}<{$"{namespaceName}.{@class.BaseType.Name}"}, {@class}>();\n");
+            registrationBuilder.Append($"services.Add{((Lifetime)lifeTime).ToString()}<{$"{namespaceName}.{@class.BaseType.Name}"}, {@class}>();\n");
         }
 
         registrationBuilder.AppendLine("\t\t\treturn services;");
@@ -130,9 +130,18 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                 }
             }
 
+            var attr = @class.GetAttributeByName(nameof(GenerateInterfaceAndRegisterItAttribute));
+            if (attr is null)
+                continue;
+
+            var baseTypes = new List<string>();
+
+            foreach (var value in attr.GetAttributeConstructorArgValuesByIndex(1))
+                baseTypes.Add(value.ToString());
+
             interfacesBuilder.AppendLine(
                 $"namespace {namespaceName}\n{{" +
-                $"\n\tpublic interface {@class.BaseType.Name}\n\t{{\t" +
+                $"\n\tpublic interface {@class.BaseType.Name}{(baseTypes.Any() ? $" : {string.Join(", ", baseTypes)}" : string.Empty)}\n\t{{\t" +
                 $"{membersBuilder}\t}}\n}}\n"
             );
         }
