@@ -106,17 +106,15 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                         )
                             break;
 
+                        if (!(@class.GetMemberConstructor() as IMethodSymbol).Parameters.Any(q => q.Name == field.Name))
+                            break;
+
                         membersBuilder.AppendLine($"\t\n\t\t{field.Type} {member.Name} {{ get; set; }}");
                         break;
                     case SymbolKind.Method:
                         var method = member as IMethodSymbol;
 
-                        if (
-                            !method.CanBeReferencedByName &&
-                            !method.IsReadOnly
-                        )
-                            break;
-                        else if (method.IsStatic)
+                        if (method.IsStatic)
                             break;
 
                         if (

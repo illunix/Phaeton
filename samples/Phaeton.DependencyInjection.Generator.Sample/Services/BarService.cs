@@ -1,7 +1,6 @@
-﻿using Phaeton.DependencyInjection;
-using SocialMediaTradex.Services.Users.Core.Abstractions.Services;
+﻿using Phaeton.DependencyInjection.Generator.Sample.Abstractions.Services;
 
-namespace SocialMediaTradex.Services.Users.Core.Services;
+namespace Phaeton.DependencyInjection.Generator.Sample.Services;
 
 [GenerateInterfaceAndRegisterIt(Lifetime.Singleton)]
 public sealed partial class BarService : IBarService

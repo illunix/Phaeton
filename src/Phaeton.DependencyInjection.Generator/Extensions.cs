@@ -73,6 +73,9 @@ public static class Extensions
         return members;
     }
 
+    public static ISymbol GetMemberConstructor(this INamedTypeSymbol symbol)
+        => symbol.GetMembers().Where(q => q.Name == ".ctor").FirstOrDefault();
+
     public static bool HasInitializer(this IFieldSymbol @field)
     {
         var equalsSyntax = @field.DeclaringSyntaxReferences[0].GetSyntax() switch

@@ -3,5 +3,7 @@
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class GenerateInterfaceAndRegisterItAttribute : Attribute 
 {
-    public GenerateInterfaceAndRegisterItAttribute(Lifetime serviceLifetime) { }
+    public GenerateInterfaceAndRegisterItAttribute(
+        Lifetime serviceLifetime
+    ) { }
 }
