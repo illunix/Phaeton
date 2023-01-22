@@ -5,34 +5,47 @@ namespace Phaeton.Auth;
 
 public sealed class AuthOptions
 {
-    public bool Enabled { get; init; } 
-    public JWTOptions? JWT { get; set; }
-    public GoogleOptions? Google { get; set; }
+    public string Algorithm { get; init; } = string.Empty;
+    public CertificateOptions? Certificate { get; init; }
+    public JwtOptions? Jwt { get; init; }
+    public IEnumerable<string>? Roles { get; init; }
 
-    public sealed class JWTOptions
+    public sealed class CertificateOptions
     {
-        public string? Issuer { get; set; }
-        public string? Audience { get; set; }
-        public string? SecretKey { get; set; }
-        public SymmetricSecurityKey? SigningKey { get; private set; }
-        public SigningCredentials? SigningCredentials { get; private set; }
-
-        public JWTOptions()
-        {
-            if (string.IsNullOrEmpty(SecretKey)) 
-                return;
-            
-            SigningKey = new(Encoding.ASCII.GetBytes(SecretKey));
-            SigningCredentials = new(
-                SigningKey,
-                SecurityAlgorithms.HmacSha256
-            );
-        }
+        public string Location { get; init; } = string.Empty;
+        public string? RawData { get; init; }
+        public string? Password { get; init; }
     }
 
-    public sealed class GoogleOptions
+    public sealed class JwtOptions
     {
-        public string? ClientId { get; init; }
-        public string? ClientSecret { get; init; }
+        public string? Issuer { get; init; }
+        public string? IssuerSigningKey { get; init; }
+        public string? Authority { get; init; }
+        public string? Audience { get; init; }
+        public string Challenge { get; init; } = "Bearer";
+        public string? MetadataAddress { get; init; }
+        public bool SaveToken { get; init; } = true;
+        public bool SaveSigninToken { get; init; }
+        public bool RequireAudience { get; init; } = true;
+        public bool RequireHttpsMetadata { get; init; } = true;
+        public bool RequireExpirationTime { get; init; } = true;
+        public bool RequireSignedTokens { get; init; } = true;
+        public TimeSpan? Expiry { get; init; }
+        public string? ValidAudience { get; init; }
+        public IEnumerable<string>? ValidAudiences { get; init; }
+        public string? ValidIssuer { get; init; }
+        public IEnumerable<string>? ValidIssuers { get; init; }
+        public bool ValidateActor { get; init; }
+        public bool ValidateAudience { get; init; } = true;
+        public bool ValidateIssuer { get; init; } = true;
+        public bool ValidateLifetime { get; init; } = true;
+        public bool ValidateTokenReplay { get; init; }
+        public bool ValidateIssuerSigningKey { get; init; }
+        public bool RefreshOnIssuerKeyNotFound { get; init; } = true;
+        public bool IncludeErrorDetails { get; init; } = true;
+        public string? AuthenticationType { get; init; }
+        public string? NameClaimType { get; init; }
+        public string? RoleClaimType { get; init; }
     }
 }

@@ -1,6 +1,5 @@
 using Phaeton.Framework;
 using Phaeton.DependencyInjection;
-using Phaeton.DependencyInjection.Generator.Sample.Abstractions.Services;
 
 var builder = WebApplication
     .CreateBuilder(args)

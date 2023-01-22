@@ -47,7 +47,6 @@ public static class Extensions
         app
             .UseErrorHandling()
             .UseSwaggerDocs()
-            .UseAuth()
             .UseRouting();
 
         return app;

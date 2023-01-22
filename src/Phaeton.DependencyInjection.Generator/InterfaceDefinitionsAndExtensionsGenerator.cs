@@ -127,11 +127,11 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
 
                         var parameters = method.Parameters
                             .ToDictionary(
-                                q => q.Type,
-                                q => q.Name
+                                q => q.Name,
+                                q => q.Type
                             );
 
-                        membersBuilder.AppendLine($"\t\n\t\t{method.ReturnType} {member.Name}({(parameters.Any() ? string.Join(", ", parameters.Select(q => $"{q.Key} {q.Value}")) : string.Empty)});");
+                        membersBuilder.AppendLine($"\t\n\t\t{method.ReturnType} {member.Name}({(parameters.Any() ? string.Join(", ", parameters.Select(q => $"{q.Value} {q.Key}")) : string.Empty)});");
                         break;
                 }
             }

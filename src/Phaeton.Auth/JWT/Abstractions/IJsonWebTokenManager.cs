@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿namespace Phaeton.Auth.JWT.Abstractions;
 
-namespace Phaeton.Auth.JWT.Abstractions;
-
-public interface IJWTManager
+public interface IJsonWebTokenManager
 {
-    JWT CreateToken(
-        long userId,
-        string email,
-        int role
+    JsonWebToken CreateToken(
+        long userId, 
+        string? email = null,
+        string? role = null,
+        IDictionary<string, IEnumerable<string>>? claims = null
     );
 }

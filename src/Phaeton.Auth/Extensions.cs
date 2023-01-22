@@ -1,113 +1,170 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Phaeton.Auth.JWT;
 using Phaeton.Auth.JWT.Abstractions;
-using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace Phaeton.Auth;
 
 public static class Extensions
 {
-    public static long GetUserId(this ClaimsPrincipal claims)
-        => string.IsNullOrWhiteSpace(claims.Identity?.Name) ? default : long.Parse(claims.Identity.Name);
+    private const string _sectionName = "auth";
 
-    public static IServiceCollection AddAuth(
-        this IServiceCollection services,
-        IConfiguration config
-    )
+    public static long UserId(this HttpContext ctx) 
+        => string.IsNullOrWhiteSpace(ctx.User.Identity?.Name) ? default : long.Parse(ctx.User.Identity.Name);
+
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = config.GetSection("auth");
+        var section = configuration.GetSection(_sectionName);
+        var options = section.BindOptions<AuthOptions>();
+        services.Configure<AuthOptions>(section);
+        services.AddAuthentication();
+
         if (!section.Exists())
             return services;
 
-        var options = section.BindOptions<AuthOptions>();
-        if (!options.Enabled)
-            return services;
-        
-        if (options.JWT is null)
+        if (options.Jwt is null)
             throw new InvalidOperationException("JWT options cannot be null.");
 
-        services.Configure<AuthOptions>(section);
-
-        services.AddAuthorization();
-
-        services.AddAuthentication(q =>
+        services.AddAuthorization(q =>
         {
-            q.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            q.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            foreach (var permission in options.Roles ?? Enumerable.Empty<string>())
+                q.AddPolicy(
+                    permission,
+                    q => q.RequireRole(permission)
+                );
+        });
+
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            RequireAudience = options.Jwt.RequireAudience,
+            ValidIssuer = options.Jwt.ValidIssuer,
+            ValidIssuers = options.Jwt.ValidIssuers,
+            ValidateActor = options.Jwt.ValidateActor,
+            ValidAudience = options.Jwt.ValidAudience,
+            ValidAudiences = options.Jwt.ValidAudiences,
+            ValidateAudience = options.Jwt.ValidateAudience,
+            ValidateIssuer = options.Jwt.ValidateIssuer,
+            ValidateLifetime = options.Jwt.ValidateLifetime,
+            ValidateTokenReplay = options.Jwt.ValidateTokenReplay,
+            ValidateIssuerSigningKey = options.Jwt.ValidateIssuerSigningKey,
+            SaveSigninToken = options.Jwt.SaveSigninToken,
+            RequireExpirationTime = options.Jwt.RequireExpirationTime,
+            RequireSignedTokens = options.Jwt.RequireSignedTokens,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        services.AddSingleton(tokenValidationParameters);
+
+        var hasCertificate = false;
+        var algorithm = options.Algorithm;
+        SecurityKey? securityKey = null;
+        if (options.Certificate is not null)
+        {
+            X509Certificate2? certificate = null;
+            var password = options.Certificate.Password;
+            var hasPassword = !string.IsNullOrWhiteSpace(password);
+            if (!string.IsNullOrWhiteSpace(options.Certificate.Location))
+            {
+                certificate = hasPassword
+                    ? new X509Certificate2(options.Certificate.Location, password)
+                    : new X509Certificate2(options.Certificate.Location);
+                var keyType = certificate.HasPrivateKey ? "with private key" : "with public key only";
+                Console.WriteLine($"Loaded X.509 certificate from location: '{options.Certificate.Location}' {keyType}.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(options.Certificate.RawData))
+            {
+                var rawData = Convert.FromBase64String(options.Certificate.RawData);
+                certificate = hasPassword
+                    ? new X509Certificate2(rawData, password)
+                    : new X509Certificate2(rawData);
+                var keyType = certificate.HasPrivateKey ? "with private key" : "with public key only";
+                Console.WriteLine($"Loaded X.509 certificate from raw data {keyType}.");
+            }
+
+            if (certificate is not null)
+            {
+                if (string.IsNullOrWhiteSpace(options.Algorithm))
+                {
+                    algorithm = SecurityAlgorithms.RsaSha256;
+                }
+
+                hasCertificate = true;
+                securityKey = new X509SecurityKey(certificate);
+                tokenValidationParameters.IssuerSigningKey = securityKey;
+                var actionType = certificate.HasPrivateKey ? "issuing" : "validating";
+                Console.WriteLine($"Using X.509 certificate for {actionType} tokens.");
+            }
+        }
+
+        if (!hasCertificate)
+        {
+            if (string.IsNullOrWhiteSpace(options.Jwt.IssuerSigningKey))
+            {
+                throw new InvalidOperationException("Missing issuer signing key.");
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Algorithm))
+            {
+                algorithm = SecurityAlgorithms.HmacSha256;
+            }
+
+            var rawKey = Encoding.UTF8.GetBytes(options.Jwt.IssuerSigningKey);
+            securityKey = new SymmetricSecurityKey(rawKey);
+            tokenValidationParameters.IssuerSigningKey = securityKey;
+            Console.WriteLine("Using symmetric encryption for issuing tokens.");
+        }
+
+        if (!string.IsNullOrWhiteSpace(options.Jwt.AuthenticationType))
+        {
+            tokenValidationParameters.AuthenticationType = options.Jwt.AuthenticationType;
+        }
+
+        if (!string.IsNullOrWhiteSpace(options.Jwt.NameClaimType))
+        {
+            tokenValidationParameters.NameClaimType = options.Jwt.NameClaimType;
+        }
+
+        if (!string.IsNullOrWhiteSpace(options.Jwt.RoleClaimType))
+        {
+            tokenValidationParameters.RoleClaimType = options.Jwt.RoleClaimType;
+        }
+
+        services.AddAuthentication(o =>
+        {
+            o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-            .AddJwtBearer(q =>
+            .AddJwtBearer(jwtBearerOptions =>
             {
-                q.ClaimsIssuer = options.JWT.Issuer;
-                q.TokenValidationParameters = new TokenValidationParameters
+                jwtBearerOptions.Authority = options.Jwt.Authority;
+                jwtBearerOptions.Audience = options.Jwt.Audience;
+                jwtBearerOptions.MetadataAddress = options.Jwt.MetadataAddress ?? string.Empty;
+                jwtBearerOptions.SaveToken = options.Jwt.SaveToken;
+                jwtBearerOptions.RefreshOnIssuerKeyNotFound = options.Jwt.RefreshOnIssuerKeyNotFound;
+                jwtBearerOptions.RequireHttpsMetadata = options.Jwt.RequireHttpsMetadata;
+                jwtBearerOptions.IncludeErrorDetails = options.Jwt.IncludeErrorDetails;
+                jwtBearerOptions.TokenValidationParameters = tokenValidationParameters;
+                if (!string.IsNullOrWhiteSpace(options.Jwt.Challenge))
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = options.JWT.Issuer,
-
-                    ValidateAudience = true,
-                    ValidAudience = options.JWT.Audience,
-
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = options.JWT.SigningKey,
-
-                    RequireExpirationTime = false,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-                q.SaveToken = true;
-
-                q.Events = new()
-                {
-                    OnAuthenticationFailed = ctx =>
-                    {
-                        if (ctx.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
-                            ctx.Response.Headers.Add(
-                                "Token-Expired",
-                                "true"
-                            );
-                        }
-
-                        return Task.CompletedTask;
-                    }
-                };
+                    jwtBearerOptions.Challenge = options.Jwt.Challenge;
+                }
             });
 
-        /*
-        services.AddAuthentication("Cookies")
-            .AddCookie(q =>
-            {
-                q.Cookie.Name = "googleauth";
-                q.LoginPath = "/api/sign-in/google";
-            }).AddGoogle(q =>
-            {
-                q.ClientId = config["auth:google:clientId"];
-                q.ClientSecret = config["auth:google:clientSecret"];
-            });
-        */
-        
-        services.AddSingleton<IJWTManager, JWTManager>();
+        if (securityKey is not null)
+        {
+            services.AddSingleton(new SecurityKeyDetails(
+                securityKey, 
+                algorithm
+            ));
+            services.AddSingleton<IJsonWebTokenManager, JsonWebTokenManager>();
+        }
 
         return services;
-    }
-
-    public static IApplicationBuilder UseAuth(this IApplicationBuilder app)
-    {
-        var options = app.ApplicationServices.GetRequiredService<IOptions<AuthOptions>>().Value;
-        if (!options.Enabled)
-            return app;
-
-        /*
-        app
-            .UseAuthentication()
-            .UseAuthorization();
-*/
-        
-        return app;
     }
 }

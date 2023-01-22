@@ -12,6 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\src\Phaeton.Auth\Phaeton.Auth.csproj" />
 		<ProjectReference Include="..\..\src\Phaeton.DependencyInjection.Generator\Phaeton.DependencyInjection.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 		<ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
 	</ItemGroup>

@@ -24,6 +24,10 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="bin\Release\netstandard2.0\\Phaeton.Mediator.Generator.dll" />
+	</ItemGroup>
+
     <ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll">
 			<Pack>True</Pack>
