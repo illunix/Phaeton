@@ -25,6 +25,8 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
                 (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree)
                     .GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null).Where(@class =>
                 @class.GetAttributes().Any(q => q.AttributeClass?.Name == nameof(GenerateMediatorAttribute))).ToList();
+        if (!classes.Any())
+            return;
 
         foreach (var @class in classes)
         {

@@ -24,6 +24,8 @@ internal sealed class gRPCExtensionsGenerator : ISourceGenerator
                 (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree)
                     .GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null).Where(@class =>
                 @class.GetMembers().Any(q => q.Name == "__ServiceName")).ToList();
+        if (!classes.Any())
+            return;
 
         foreach (var @class in classes)
         {

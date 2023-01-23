@@ -26,6 +26,8 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
             ctx,
             nameof(GenerateInterfaceAndRegisterItAttribute)
         );
+        if (!classes.Any())
+            return;
 
         foreach (var @class in classes)
         {

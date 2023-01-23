@@ -18,7 +18,11 @@ internal sealed class ConstructorInjectionGenerator : ISourceGenerator
 
         var sourceBuilder = new StringBuilder();
 
-        foreach (var @class in syntaxReceiver.GetSymbols(ctx))
+        var classes = syntaxReceiver.GetSymbols(ctx);
+        if (!classes.Any())
+            return;
+
+        foreach (var @class in classes)
         {
             var fields = @class
                 .GetMembers()
