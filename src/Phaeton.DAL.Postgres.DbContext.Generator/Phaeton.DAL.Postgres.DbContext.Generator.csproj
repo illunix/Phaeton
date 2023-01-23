@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>1.0.2</Version>
+		<RootNamespace>Phaeton.DAL.Postgres.DbContext.Generator</RootNamespace>
+		<Title>Phaeton.DAL.Postgres.DbContext.Generator</Title>
+		<Authors>illunix</Authors>
+		<Description>A Phaeton db context source generator</Description>
+		<PackageIcon>Phaeton.png</PackageIcon>
+		<RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="bin\Debug\netstandard2.0\\Phaeton.DAL.Postgres.DbContext.Generator.dll" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<None Include="$(OutputPath)\$(AssemblyName).dll">
+			<Pack>True</Pack>
+			<PackagePath>analyzers/dotnet/cs</PackagePath>
+			<Visible>False</Visible>
+		</None>
+		<None Include="..\..\assets\Phaeton.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+			<Visible>False</Visible>
+		</None>
+		<None Update="Phaeton.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>
