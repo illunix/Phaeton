@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.DAL.Postgres.DbCont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.DAL.Postgres.DbContext.Generator.Sample", "samples\Phaeton.DAL.Postgres.DbContext.Generator.Sample\Phaeton.DAL.Postgres.DbContext.Generator.Sample.csproj", "{6CD0B869-5170-4271-95F4-A3A0864CA785}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phaeton.Caching.Redis", "src\Phaeton.Caching.Redis\Phaeton.Caching.Redis.csproj", "{75493E38-4AAA-4C75-8D82-BEB25B99538A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,10 @@ Global
 		{6CD0B869-5170-4271-95F4-A3A0864CA785}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CD0B869-5170-4271-95F4-A3A0864CA785}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CD0B869-5170-4271-95F4-A3A0864CA785}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75493E38-4AAA-4C75-8D82-BEB25B99538A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75493E38-4AAA-4C75-8D82-BEB25B99538A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75493E38-4AAA-4C75-8D82-BEB25B99538A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75493E38-4AAA-4C75-8D82-BEB25B99538A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +190,7 @@ Global
 		{9D740092-5551-46F3-831E-0E39316BA47E} = {2087850E-8416-4FF0-A4ED-05BDDF755066}
 		{9FBB5461-CC86-4E0F-A694-FDE581EC6CFD} = {922600F7-A469-4883-8210-CA399A692335}
 		{6CD0B869-5170-4271-95F4-A3A0864CA785} = {2087850E-8416-4FF0-A4ED-05BDDF755066}
+		{75493E38-4AAA-4C75-8D82-BEB25B99538A} = {922600F7-A469-4883-8210-CA399A692335}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2AAC794-0A2A-447B-AB7C-E9DB010D4192}

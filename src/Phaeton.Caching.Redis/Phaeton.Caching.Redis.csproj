@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Title>Phaeton.HTTP</Title>
+        <Authors>illunix</Authors>
+        <Description>A Phaeton redis caching package</Description>
+        <PackageIcon>Phaeton.png</PackageIcon>
+        <RepositoryUrl>https://github.com/illunix/Phaeton</RepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Phaeton\Phaeton.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="StackExchange.Redis" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Phaeton.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="StackExchange.Redis" Version="2.6.90" />
+    </ItemGroup>
+</Project>
