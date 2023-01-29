@@ -36,7 +36,7 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                 continue;
 
             if (namespaceName.Contains("Services;"))
-                namespaceName = namespaceName.Replace("Services;", "Abstractions.Services");
+                namespaceName = namespaceName.Replace("Services;", "Services.Abstractions");
 
             var attr = @class.GetAttributeByName(nameof(GenerateInterfaceAndRegisterItAttribute));
             if (attr is null)
@@ -67,7 +67,7 @@ public sealed class InterfaceDefinitionsAndExtensionsGenerator : ISourceGenerato
                 continue;
 
             if (namespaceName.Contains("Services;"))
-                namespaceName = namespaceName.Replace("Services;", "Abstractions.Services");
+                namespaceName = namespaceName.Replace("Services;", "Services.Abstractions");
 
             var membersBuilder = new StringBuilder();
 

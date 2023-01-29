@@ -27,7 +27,7 @@ internal sealed class DbContextGenerator : ISourceGenerator
                 @class.GetAttributes().Any(q => q.AttributeClass?.Name == nameof(DbContextAttribute))).FirstOrDefault();
 
         var ogNamespace = @class.ContainingNamespace.ToDisplayString();
-        var @namespace = ogNamespace.Replace("Context", "Abstractions.Context");
+        var @namespace = ogNamespace.Replace("Context", "Context.Abstractions");
 
         sb.AppendLine(
 @$"using Microsoft.EntityFrameworkCore;
@@ -64,10 +64,12 @@ namespace Phaeton.DAL.Postgres
                         .Select(q => $"public {q.Type} {q.Name} {{ get; init; }}")
         .ToList();
 
+        var accessModifier = @class.DeclaredAccessibility == Accessibility.Public ? "public" : "internal";
+
         sb.AppendLine(
 @$"namespace {@namespace}
 {{
-    public interface I{@class.Name} : IDataContext
+    {accessModifier} interface I{@class.Name} : IDataContext
     {{
         {string.Join("\n", members)}          
     }}
@@ -77,7 +79,7 @@ namespace {@class.ContainingNamespace}
 {{
     using {@namespace};
 
-    public partial class {@class.Name} : DbDataContext, I{@class.Name}
+    {accessModifier} partial class {@class.Name} : DbDataContext, I{@class.Name}
     {{
         public {@class.Name}(DbContextOptions<{@class.Name}> options) : base(options) {{ }}
 

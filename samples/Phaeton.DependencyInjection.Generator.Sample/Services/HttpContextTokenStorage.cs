@@ -1,4 +1,5 @@
 ﻿using Phaeton.Auth.JWT;
+using Phaeton.DependencyInjection.Generator.Sample.Services.Abstractions;
 
 namespace Phaeton.DependencyInjection.Generator.Sample.Services;
 

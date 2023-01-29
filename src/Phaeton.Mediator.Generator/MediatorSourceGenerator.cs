@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -23,12 +22,17 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
         var classes = syntaxReceiver.CandidateClasses
             .Select(classSyntax =>
                 (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree)
+                    .GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null).ToList();
+
+        var classesWithAttr = syntaxReceiver.CandidateClasses
+            .Select(classSyntax =>
+                (INamedTypeSymbol)ctx.Compilation.GetSemanticModel(classSyntax.SyntaxTree)
                     .GetDeclaredSymbol(classSyntax)!).TakeWhile(@class => @class is not null).Where(@class =>
                 @class.GetAttributes().Any(q => q.AttributeClass?.Name == nameof(GenerateMediatorAttribute))).ToList();
-        if (!classes.Any())
+        if (!classesWithAttr.Any())
             return;
 
-        foreach (var @class in classes)
+        foreach (var @class in classesWithAttr)
         {
             var @namespace = @class.ContainingNamespace.ToDisplayString();
             var handlerMethod = @class.GetMembers()
@@ -50,11 +54,24 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
 
             var propertiesBuilder = new StringBuilder();
 
-            foreach (var param in handlerMethodParams.Where(q =>
-                         q.Key.Name != "Command" &&
-                         q.Key.Name != "Query"
-                     ))
+            foreach (var param in handlerMethodParamsWithoutRequest)
+            {
+                if (!param.Key
+                    .ToDisplayString()
+                    .StartsWith(@namespace.Split('.')[0])
+                )
+                {
+                    var th = classes
+                        .FirstOrDefault(q => q.BaseType.Name == param.Key.Name);
+                    if (th is null)
+                        continue;
+
+                    propertiesBuilder.AppendLine($"private readonly {(th.ContainingNamespace.ToDisplayString() + ';').Replace("Services;", "Services.Abstractions")}.{param.Key} _{param.Value};");
+                    continue;
+                }
+
                 propertiesBuilder.AppendLine($"private readonly {param.Key} _{param.Value};");
+            }
 
             var requestBuilder = new StringBuilder();
 
@@ -96,14 +113,33 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
 
             var constructorBuilder = new StringBuilder();
 
-            var constructorParams =
-                string.Join(", ", handlerMethodParamsWithoutRequest.Select(q => $"{q.Key} {q.Value}"));
+            var constructorParams = new List<string>();
+
+            foreach (var param in handlerMethodParamsWithoutRequest)
+            {
+                if (!param.Key
+                    .ToDisplayString()
+                    .StartsWith(@namespace.Split('.')[0])
+                )
+                {
+                    var th = classes
+                        .FirstOrDefault(q => q.BaseType.Name == param.Key.Name);
+                    if (th is null)
+                        continue;
+
+                    constructorParams.Add($"{(th.ContainingNamespace.ToDisplayString() + ';').Replace("Services;", "Services.Abstractions")}.{param.Key} {param.Value}");
+                    continue;
+                }
+
+                constructorParams.Add($"{param.Key} {param.Value}");
+            }
+
             var injected = string.Join("\n", handlerMethodParamsWithoutRequest.Select(q => $"_{q.Value} = {q.Value};"));
 
             var useConstructor = handlerMethodParamsWithoutRequest.Any();
             if (useConstructor)
                 constructorBuilder.AppendLine(
-                    $@"public {requestMethodName}HandlerCore({constructorParams})
+                    $@"public {requestMethodName}HandlerCore({string.Join(", ", constructorParams)})
                     {{{injected}
                     }}"
                 );

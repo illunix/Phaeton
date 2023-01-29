@@ -5,7 +5,7 @@
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-		<Version>1.0.6</Version>
+		<Version>1.0.8</Version>
         <RootNamespace>Phaeton.Mediator.Generator</RootNamespace>
         <Title>Phateon.Mediator.Generator</Title>
         <Authors>illunix</Authors>

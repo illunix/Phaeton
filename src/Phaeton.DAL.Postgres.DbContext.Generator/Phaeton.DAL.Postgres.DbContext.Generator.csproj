@@ -5,7 +5,7 @@
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<RootNamespace>Phaeton.DAL.Postgres.DbContext.Generator</RootNamespace>
 		<Title>Phaeton.DAL.Postgres.DbContext.Generator</Title>
 		<Authors>illunix</Authors>

@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>Phateon</Title>
+	<Version>1.0.1</Version>
     <Authors>illunix</Authors>
     <Description>A Microservices Library for ASP.NET Core. This repository contains a collection of libraries that simplify the process of building scalable and high-performance microservices using the ASP.NET Core framework.</Description>
     <PackageIcon>Phaeton.png</PackageIcon>
