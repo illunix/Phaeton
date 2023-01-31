@@ -25,7 +25,10 @@ public static class Extensions
         services.AddSwaggerGen(q =>
         {
             q.EnableAnnotations();
-            q.CustomSchemaIds(x => x.FullName);
+            q.CustomSchemaIds(x => x.FullName!.Replace(
+                '+',
+                '.'
+            ));
             q.SwaggerDoc(
                 options.Version,
                 new()

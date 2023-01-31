@@ -36,7 +36,7 @@ using Phaeton.DAL.Postgres.Abstractions;
 namespace Phaeton.DAL.Postgres
 {{
     using {ogNamespace};
-    using {@namespace};
+    using {@namespace}.Abstractions;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Configuration;
 
@@ -67,7 +67,7 @@ namespace Phaeton.DAL.Postgres
         var accessModifier = @class.DeclaredAccessibility == Accessibility.Public ? "public" : "internal";
 
         sb.AppendLine(
-@$"namespace {@namespace}
+@$"namespace {@namespace}.Abstractions
 {{
     {accessModifier} interface I{@class.Name} : IDataContext
     {{
@@ -77,7 +77,7 @@ namespace Phaeton.DAL.Postgres
 
 namespace {@class.ContainingNamespace}
 {{
-    using {@namespace};
+    using {@namespace}.Abstractions;
 
     {accessModifier} partial class {@class.Name} : DbDataContext, I{@class.Name}
     {{

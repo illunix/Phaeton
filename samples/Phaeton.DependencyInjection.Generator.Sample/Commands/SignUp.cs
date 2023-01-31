@@ -1,10 +1,12 @@
-﻿using Phaeton.DependencyInjection.Generator.Sample.Services.Abstractions;
+﻿using Phaeton.Auth.JWT.Abstractions;
+using Phaeton.DependencyInjection.Generator.Sample.DAL.Context.Abstractions;
+using Phaeton.DependencyInjection.Generator.Sample.Services.Abstractions;
 using Phaeton.Mediator;
 
 namespace Phaeton.DependencyInjection.Generator.Sample.Commands;
 
 [GenerateMediator]
-public sealed partial class SignUp
+internal sealed partial class SignUp
 {
     public partial record Command(
         string Email,
@@ -22,7 +24,9 @@ public sealed partial class SignUp
     public static async Task Handler(
         Command req,
         ITokenStorage tokenStorage,
-        IHttpContextAccessor http
+        IAppDbContext ctx,
+        IHttpContextAccessor http,
+        IJsonWebTokenManager jwtMgr
     )
     {
 

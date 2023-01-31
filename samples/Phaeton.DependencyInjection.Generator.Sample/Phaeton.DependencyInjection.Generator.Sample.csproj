@@ -13,6 +13,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Phaeton.Auth\Phaeton.Auth.csproj" />
+		<ProjectReference Include="..\..\src\Phaeton.DAL.Postgres.DbContext.Generator\Phaeton.DAL.Postgres.DbContext.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+		<ProjectReference Include="..\..\src\Phaeton.DAL.Postgres\Phaeton.DAL.Postgres.csproj" />
 		<ProjectReference Include="..\..\src\Phaeton.DependencyInjection.Generator\Phaeton.DependencyInjection.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 		<ProjectReference Include="..\..\src\Phaeton.Framework\Phaeton.Framework.csproj" />
 		<ProjectReference Include="..\..\src\Phaeton.Mediator.Generator\Phaeton.Mediator.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />

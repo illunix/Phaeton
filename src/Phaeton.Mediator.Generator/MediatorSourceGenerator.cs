@@ -56,9 +56,28 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
 
             foreach (var param in handlerMethodParamsWithoutRequest)
             {
-                if (!param.Key
-                    .ToDisplayString()
-                    .StartsWith(@namespace.Split('.')[0])
+                var paramNamespace = param.Key.ToDisplayString();
+
+                if (paramNamespace.Contains("DbContext"))
+                {
+                    var th = classes
+                        .FirstOrDefault(q => q.Name.Contains("DbContext"));
+                    if (th is null)
+                        continue;
+
+                    var thNamespace = th.ContainingNamespace.ToDisplayString() + ';';
+                    if (thNamespace.Contains("DAL.Context;"))
+                        thNamespace = thNamespace.Replace("DAL.Context;", "DAL.Context.Abstractions");
+                    else if (thNamespace.Contains("DAL;"))
+                        thNamespace = thNamespace.Replace("DAL;", "DAL.Abstractions");
+
+                    propertiesBuilder.AppendLine($"private readonly {thNamespace}.{param.Key} _{param.Value};");
+                }
+
+                if (!paramNamespace
+                    .StartsWith(@namespace.Split('.')[0]) &&
+                    !paramNamespace.Contains('.') &&
+                    !paramNamespace.Contains("DbContext")
                 )
                 {
                     var th = classes
@@ -70,7 +89,8 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
                     continue;
                 }
 
-                propertiesBuilder.AppendLine($"private readonly {param.Key} _{param.Value};");
+                if (!paramNamespace.Contains("DbContext"))
+                    propertiesBuilder.AppendLine($"private readonly {param.Key} _{param.Value};");
             }
 
             var requestBuilder = new StringBuilder();
@@ -117,9 +137,28 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
 
             foreach (var param in handlerMethodParamsWithoutRequest)
             {
-                if (!param.Key
-                    .ToDisplayString()
-                    .StartsWith(@namespace.Split('.')[0])
+                var paramNamespace = param.Key.ToDisplayString();
+
+                if (paramNamespace.Contains("DbContext"))
+                {
+                    var th = classes
+                        .FirstOrDefault(q => q.Name.Contains("DbContext"));
+                    if (th is null)
+                        continue;
+
+                    var thNamespace = th.ContainingNamespace.ToDisplayString() + ';';
+                    if (thNamespace.Contains("DAL.Context;"))
+                        thNamespace = thNamespace.Replace("DAL.Context;", "DAL.Context.Abstractions");
+                    else if (thNamespace.Contains("DAL;"))
+                        thNamespace = thNamespace.Replace("DAL;", "DAL.Abstractions");
+
+                    constructorParams.Add($"{thNamespace}.{param.Key} {param.Value}");
+                }
+
+                if (!paramNamespace
+                    .StartsWith(@namespace.Split('.')[0]) &&
+                    !paramNamespace.Contains('.') &&
+                    !paramNamespace.Contains("DbContext")
                 )
                 {
                     var th = classes
@@ -131,7 +170,8 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
                     continue;
                 }
 
-                constructorParams.Add($"{param.Key} {param.Value}");
+                if (!paramNamespace.Contains("DbContext"))
+                    constructorParams.Add($"{param.Key} {param.Value}");
             }
 
             var injected = string.Join("\n", handlerMethodParamsWithoutRequest.Select(q => $"_{q.Value} = {q.Value};"));
@@ -177,7 +217,7 @@ internal sealed class MediatorSourceGenerator : ISourceGenerator
             sb.AppendLine(
 @$"namespace {@namespace}
 {{
-    public partial class {@class.Name} 
+    {@class.DeclaredAccessibility.ToString().ToLower()} partial class {@class.Name} 
     {{
         {requestBuilder}
 
